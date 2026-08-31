@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.crm.lead.fetcher</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="crm.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@name='generate_lead_setting_container']" position="before">
+                <block title="Minado de Leads - DENUE (INEGI)" name="denue_lead_setting_container" groups="base.group_system">
+                    <setting id="crm_lead_fetcher_denue_settings"
+                        string="Directorio DENUE"
+                        help="Genere leads desde el directorio gratuito DENUE de INEGI (México). Requiere un token gratuito.">
+                        <div class="alert alert-info mb-3 small" role="status">
+                            <b>Configuración rápida:</b>
+                            1. Obtenga su token gratuito en
+                            <a href="https://www.inegi.org.mx/app/api/denue/v1/tokenVerify.aspx" target="_blank">INEGI</a>.
+                            2. Péguelo abajo y pulse <b>Probar conexión</b>.
+                        </div>
+                        <label for="denue_token" string="Token de la API" class="col-lg-3 o_light_label fw-bold"/>
+                        <div class="d-flex gap-2">
+                            <field name="denue_token" widget="password" placeholder="Pegue su token de INEGI aquí..." class="font-monospace flex-fill"/>
+                            <button type="object" name="action_test_denue_connection" class="btn-outline-primary btn-sm"><i class="fa fa-plug"/> Probar</button>
+                            <button type="object" name="action_open_denue_token_page" class="btn-outline-secondary btn-sm"><i class="fa fa-external-link"/> Obtener token</button>
+                        </div>
+                    </setting>
+                    <setting string="Entidad federativa por defecto"
+                        help="Código INEGI de 2 dígitos. Ej: 09=CDMX, 14=Jalisco, 24=SLP.">
+                        <label for="denue_entidad" class="col-lg-3 o_light_label"/>
+                        <field name="denue_entidad" placeholder="24" class="font-monospace oe_inline"/>
+                    </setting>
+                    <setting string="Máximo de registros por búsqueda"
+                        help="Máximo de registros que descargará por búsqueda. Más registros = más leads pero más lento.">
+                        <label for="denue_max_records" class="col-lg-3 o_light_label"/>
+                        <field name="denue_max_records" class="oe_inline"/>
+                    </setting>
+                    <setting string="Pausa entre llamadas (segundos)"
+                        help="Pausa entre cada petición al API para evitar límites de tasa.">
+                        <label for="denue_sleep_seconds" class="col-lg-3 o_light_label"/>
+                        <field name="denue_sleep_seconds" class="oe_inline"/>
+                    </setting>
+                </block>
+
+                <block title="Minado de Leads - Yelp" name="yelp_lead_setting_container" groups="base.group_system">
+                    <setting id="crm_lead_fetcher_yelp_settings"
+                        string="Directorio Yelp"
+                        help="Genere leads desde Yelp con calificaciones, reseñas y datos de contacto verificados.">
+                        <div class="alert alert-info mb-3 small" role="status">
+                            <b>Configuración rápida:</b>
+                            1. Cree una app en
+                            <a href="https://www.yelp.com/developers/v3/manage_app" target="_blank">Yelp Developers</a>
+                            (gratuito, 5,000 llamadas/día).
+                            2. Copie su API Key y péguela abajo.
+                        </div>
+                        <label for="yelp_api_key" string="API Key" class="col-lg-3 o_light_label fw-bold"/>
+                        <div class="d-flex gap-2">
+                            <field name="yelp_api_key" widget="password" placeholder="Pegue su API Key de Yelp aquí..." class="font-monospace flex-fill"/>
+                            <button type="object" name="action_test_yelp_connection" class="btn-outline-primary btn-sm"><i class="fa fa-plug"/> Probar</button>
+                            <button type="object" name="action_open_yelp_developer_page" class="btn-outline-secondary btn-sm"><i class="fa fa-external-link"/> Obtener clave</button>
+                        </div>
+                    </setting>
+                    <setting string="Ubicación por defecto"
+                        help="Ciudad o dirección para búsquedas Yelp.">
+                        <label for="yelp_location" class="col-lg-3 o_light_label"/>
+                        <field name="yelp_location" placeholder="San Luis Potosí, México" class="oe_inline"/>
+                    </setting>
+                    <setting string="Máximo de resultados Yelp"
+                        help="Máximo de resultados por búsqueda (máximo 240 por límite de Yelp).">
+                        <label for="yelp_max_results" class="col-lg-3 o_light_label"/>
+                        <field name="yelp_max_results" class="oe_inline"/>
+                    </setting>
+                </block>
+
+                <block title="Minado de Leads - Google Places" name="google_lead_setting_container" groups="base.group_system">
+                    <setting id="crm_lead_fetcher_google_settings"
+                        string="Directorio Google Places"
+                        help="Genere leads globales desde Google Maps / Places API con teléfonos, sitios web, horarios y calificaciones oficiales.">
+                        <div class="alert alert-info mb-3 small" role="status">
+                            <b>Configuración rápida:</b>
+                            1. Obtenga su API Key en
+                            <a href="https://console.cloud.google.com/google/maps-apis" target="_blank">Google Cloud Console</a>
+                            (asegúrese de habilitar <i>Places API</i>).
+                            2. Péguela abajo y pulse <b>Probar conexión</b>.
+                        </div>
+                        <label for="google_places_api_key" string="API Key" class="col-lg-3 o_light_label fw-bold"/>
+                        <div class="d-flex gap-2">
+                            <field name="google_places_api_key" widget="password" placeholder="Pegue su API Key de Google Places aquí..." class="font-monospace flex-fill"/>
+                            <button type="object" name="action_test_google_connection" class="btn-outline-primary btn-sm"><i class="fa fa-plug"/> Probar</button>
+                            <button type="object" name="action_open_google_developer_page" class="btn-outline-secondary btn-sm"><i class="fa fa-external-link"/> Consola Google</button>
+                        </div>
+                    </setting>
+                    <setting string="Ubicación por defecto"
+                        help="Ciudad o dirección por defecto para búsquedas de Google Places.">
+                        <label for="google_location" class="col-lg-3 o_light_label"/>
+                        <field name="google_location" placeholder="San Luis Potosí, México" class="oe_inline"/>
+                    </setting>
+                    <setting string="Máximo de resultados Google"
+                        help="Máximo de resultados por búsqueda (máximo 60 según límites de Text Search).">
+                        <label for="google_max_results" class="col-lg-3 o_light_label"/>
+                        <field name="google_max_results" class="oe_inline"/>
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

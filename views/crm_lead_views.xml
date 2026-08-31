@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="crm_lead_view_form_fetcher" model="ir.ui.view">
+        <field name="name">crm.lead.view.form.fetcher</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="action_enrich_email" type="object" string="Enriquecer Email" class="btn-primary" icon="fa-envelope" groups="base.group_user"/>
+            </xpath>
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="source_key" widget="badge" decoration-info="source_key == 'denue'" decoration-warning="source_key == 'yelp'" decoration-success="source_key == 'google'" invisible="not source_key"/>
+                <field name="external_id" readonly="1" invisible="not external_id"/>
+                <field name="lead_request_id" readonly="1" invisible="not lead_request_id"/>
+            </xpath>
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <group name="mining_data" string="Datos del minado" invisible="not external_id">
+                    <group>
+                        <field name="source_rating" readonly="1"/>
+                        <field name="source_reviews" readonly="1"/>
+                        <field name="source_price_level" readonly="1"/>
+                        <field name="yelp_price" readonly="1" invisible="source_key != 'yelp'"/>
+                    </group>
+                    <group>
+                        <field name="latitude" readonly="1"/>
+                        <field name="longitude" readonly="1"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="crm_lead_view_list_fetcher" model="ir.ui.view">
+        <field name="name">crm.lead.view.list.fetcher</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_leads"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="source_key" widget="badge" decoration-info="source_key == 'denue'" decoration-warning="source_key == 'yelp'" decoration-success="source_key == 'google'" optional="show"/>
+                <field name="external_id" optional="show"/>
+                <field name="lead_request_id" optional="hide"/>
+                <field name="source_rating" string="Calificación" optional="hide"/>
+                <field name="source_reviews" string="Reseñas" optional="hide"/>
+                <field name="source_price_level" string="Precio" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="crm_oppor_view_list_fetcher" model="ir.ui.view">
+        <field name="name">crm.lead.view.list.oppor.fetcher</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="source_key" widget="badge" decoration-info="source_key == 'denue'" decoration-warning="source_key == 'yelp'" decoration-success="source_key == 'google'" optional="show"/>
+                <field name="external_id" optional="show"/>
+                <field name="lead_request_id" optional="hide"/>
+                <field name="source_rating" string="Calificación" optional="hide"/>
+                <field name="source_reviews" string="Reseñas" optional="hide"/>
+                <field name="source_price_level" string="Precio" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="crm_lead_view_kanban_fetcher" model="ir.ui.view">
+        <field name="name">crm.lead.view.kanban.fetcher</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
+        <field name="arch" type="xml">
+            <xpath expr="//t[@t-name='card']" position="inside">
+                <div t-if="record.source_key.raw_value" class="mt-1 d-flex gap-1 align-items-center">
+                    <field name="source_key" widget="badge" decoration-info="source_key == 'denue'" decoration-warning="source_key == 'yelp'" decoration-success="source_key == 'google'"/>
+                    <span t-if="record.external_id.raw_value" class="text-muted small">
+                        <field name="external_id"/>
+                    </span>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="crm_oppor_view_kanban_fetcher" model="ir.ui.view">
+        <field name="name">crm.lead.view.kanban.oppor.fetcher</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.view_crm_lead_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//t[@t-name='card']" position="inside">
+                <div t-if="record.source_key.raw_value" class="mt-1 d-flex gap-1 align-items-center">
+                    <field name="source_key" widget="badge" decoration-info="source_key == 'denue'" decoration-warning="source_key == 'yelp'" decoration-success="source_key == 'google'"/>
+                    <span t-if="record.external_id.raw_value" class="text-muted small">
+                        <field name="external_id"/>
+                    </span>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="yelp_cat_restaurants" model="crm.yelp.category">
+            <field name="alias">restaurants</field>
+            <field name="name">Restaurantes</field>
+            <field name="keywords">restaurante,comida,taqueria,cafeteria,bar,cocina</field>
+        </record>
+        <record id="yelp_cat_mexican" model="crm.yelp.category">
+            <field name="alias">mexican</field>
+            <field name="name">Comida mexicana</field>
+            <field name="keywords">mexicano,tacos,enchiladas,tortilleria,antojitos</field>
+        </record>
+        <record id="yelp_cat_plumbing" model="crm.yelp.category">
+            <field name="alias">plumbing</field>
+            <field name="name">Plomería</field>
+            <field name="keywords">plomero,plomeria,tuberia,fontaneria</field>
+        </record>
+        <record id="yelp_cat_electricians" model="crm.yelp.category">
+            <field name="alias">electricians</field>
+            <field name="name">Electricistas</field>
+            <field name="keywords">electrico,electricista,instalacion electrica,cableado</field>
+        </record>
+        <record id="yelp_cat_hvac" model="crm.yelp.category">
+            <field name="alias">hvac</field>
+            <field name="name">Aire acondicionado y calefacción</field>
+            <field name="keywords">clima,aires acondicionados,refrigeracion,calefaccion</field>
+        </record>
+        <record id="yelp_cat_contractors" model="crm.yelp.category">
+            <field name="alias">contractors</field>
+            <field name="name">Contratistas generales</field>
+            <field name="keywords">contratista,construccion,obra,remodelacion</field>
+        </record>
+        <record id="yelp_cat_roofing" model="crm.yelp.category">
+            <field name="alias">roofing</field>
+            <field name="name">Techos y cubiertas</field>
+            <field name="keywords">techo,cubierta,impermeabilizacion,losa</field>
+        </record>
+        <record id="yelp_cat_landscaping" model="crm.yelp.category">
+            <field name="alias">landscaping</field>
+            <field name="name">Paisajismo y jardinería</field>
+            <field name="keywords">jardin,paisajismo,jardineria,cesped,plantas</field>
+        </record>
+        <record id="yelp_cat_painters" model="crm.yelp.category">
+            <field name="alias">painters</field>
+            <field name="name">Pintores</field>
+            <field name="keywords">pintura,pintor,fachada,interior,exterior</field>
+        </record>
+        <record id="yelp_cat_pest_control" model="crm.yelp.category">
+            <field name="alias">pest_control</field>
+            <field name="name">Control de plagas</field>
+            <field name="keywords">plagas,fumigacion,cucarachas,ratas,termitas</field>
+        </record>
+        <record id="yelp_cat_movers" model="crm.yelp.category">
+            <field name="alias">movers</field>
+            <field name="name">Mudanzas</field>
+            <field name="keywords">mudanza,flete,transporte,mover</field>
+        </record>
+        <record id="yelp_cat_homecleaning" model="crm.yelp.category">
+            <field name="alias">homecleaning</field>
+            <field name="name">Limpieza del hogar</field>
+            <field name="keywords">limpieza,limpieza hogar,aseo,aseo doméstico</field>
+        </record>
+        <record id="yelp_cat_accountants" model="crm.yelp.category">
+            <field name="alias">accountants</field>
+            <field name="name">Contadores</field>
+            <field name="keywords">contable,contador,contabilidad,impuestos,fiscal</field>
+        </record>
+        <record id="yelp_cat_financialadvising" model="crm.yelp.category">
+            <field name="alias">financialadvising</field>
+            <field name="name">Asesoría financiera</field>
+            <field name="keywords">financiero,asesor,inversion,finanzas</field>
+        </record>
+        <record id="yelp_cat_businessconsulting" model="crm.yelp.category">
+            <field name="alias">businessconsulting</field>
+            <field name="name">Consultoría empresarial</field>
+            <field name="keywords">consultor,consultoria,empresa,negocio,estrategia</field>
+        </record>
+        <record id="yelp_cat_lawyers" model="crm.yelp.category">
+            <field name="alias">lawyers</field>
+            <field name="name">Abogados</field>
+            <field name="keywords">abogado,legal,derecho, bufete, litigio</field>
+        </record>
+        <record id="yelp_cat_insurance" model="crm.yelp.category">
+            <field name="alias">insurance</field>
+            <field name="name">Seguros</field>
+            <field name="keywords">seguro,aseguradora,poliza,proteccion</field>
+        </record>
+        <record id="yelp_cat_dentists" model="crm.yelp.category">
+            <field name="alias">dentists</field>
+            <field name="name">Dentistas</field>
+            <field name="keywords">dentista,dental,odontologia,brackets,limpieza dental</field>
+        </record>
+        <record id="yelp_cat_autorepair" model="crm.yelp.category">
+            <field name="alias">autorepair</field>
+            <field name="name">Talleres mecánicos</field>
+            <field name="keywords">mecanico,taller,auto,vehiculo,reparacion,aceite</field>
+        </record>
+        <record id="yelp_cat_graphicdesign" model="crm.yelp.category">
+            <field name="alias">graphicdesign</field>
+            <field name="name">Diseño gráfico</field>
+            <field name="keywords">diseno,grafico,logo,branding,publicidad</field>
+        </record>
+        <record id="yelp_cat_printing" model="crm.yelp.category">
+            <field name="alias">printing</field>
+            <field name="name">Imprenta</field>
+            <field name="keywords">imprenta,impresion,volantes,guias,acetatos</field>
+        </record>
+        <record id="yelp_cat_photographers" model="crm.yelp.category">
+            <field name="alias">photographers</field>
+            <field name="name">Fotógrafos</field>
+            <field name="keywords">fotografo,fotografia,fotos,sesion,boda</field>
+        </record>
+        <record id="yelp_cat_laundryservices" model="crm.yelp.category">
+            <field name="alias">laundryservices</field>
+            <field name="name">Lavandería</field>
+            <field name="keywords">lavanderia,tintoreria,lavado,planchado</field>
+        </record>
+        <record id="yelp_cat_shopping" model="crm.yelp.category">
+            <field name="alias">shopping</field>
+            <field name="name">Tiendas y compras</field>
+            <field name="keywords">tienda,comercio,retail,local,commerce</field>
+        </record>
+        <record id="yelp_cat_hair" model="crm.yelp.category">
+            <field name="alias">hair</field>
+            <field name="name">Peluquerías</field>
+            <field name="keywords">peluqueria,cabello,corte,barberia,estetica</field>
+        </record>
+        <record id="yelp_cat_nail" model="crm.yelp.category">
+            <field name="alias">nails</field>
+            <field name="name">Uñas y manicure</field>
+            <field name="keywords">uñas,manicure,pedicure,esmalte,acrylic</field>
+        </record>
+        <record id="yelp_cat_waxing" model="crm.yelp.category">
+            <field name="alias">waxing</field>
+            <field name="name">Depilación y spa</field>
+            <field name="keywords">depilacion,spa,masaje,relajacion,belleza</field>
+        </record>
+        <record id="yelp_cat_fitness" model="crm.yelp.category">
+            <field name="alias">gyms</field>
+            <field name="name">Gimnasios y fitness</field>
+            <field name="keywords">gimnasio,fitness,ejercicio,entrenamiento,yoga</field>
+        </record>
+
+    </data>
+</odoo>

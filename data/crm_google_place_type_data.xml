@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="google_type_accounting" model="crm.google.place.type">
+            <field name="code">accounting</field>
+            <field name="name">Contabilidad / Despachos contables</field>
+            <field name="keywords">contador,contabilidad,auditoria,fiscal,impuestos</field>
+        </record>
+        <record id="google_type_lawyer" model="crm.google.place.type">
+            <field name="code">lawyer</field>
+            <field name="name">Abogados / Despachos jurídicos</field>
+            <field name="keywords">abogado,juridico,legal,notaria,litigio,derecho</field>
+        </record>
+        <record id="google_type_doctor" model="crm.google.place.type">
+            <field name="code">doctor</field>
+            <field name="name">Médicos / Consultorios</field>
+            <field name="keywords">medico,doctor,consulta,clinica,especialista,pediatra</field>
+        </record>
+        <record id="google_type_dentist" model="crm.google.place.type">
+            <field name="code">dentist</field>
+            <field name="name">Dentistas / Clínicas dentales</field>
+            <field name="keywords">dentista,odontologia,ortodoncia,dientes,dental</field>
+        </record>
+        <record id="google_type_hospital" model="crm.google.place.type">
+            <field name="code">hospital</field>
+            <field name="name">Hospitales y Clínicas</field>
+            <field name="keywords">hospital,sanatorio,urgencias,clinica medica</field>
+        </record>
+        <record id="google_type_pharmacy" model="crm.google.place.type">
+            <field name="code">pharmacy</field>
+            <field name="name">Farmacias</field>
+            <field name="keywords">farmacia,medicamentos,drogueria,botica</field>
+        </record>
+        <record id="google_type_veterinary_care" model="crm.google.place.type">
+            <field name="code">veterinary_care</field>
+            <field name="name">Veterinarias / Cuidado animal</field>
+            <field name="keywords">veterinaria,mascotas,animales,perros,gatos</field>
+        </record>
+        <record id="google_type_restaurant" model="crm.google.place.type">
+            <field name="code">restaurant</field>
+            <field name="name">Restaurantes</field>
+            <field name="keywords">restaurante,comida,taqueria,cocina,mariscos,cortes</field>
+        </record>
+        <record id="google_type_cafe" model="crm.google.place.type">
+            <field name="code">cafe</field>
+            <field name="name">Cafeterías</field>
+            <field name="keywords">cafe,cafeteria,coffee,reposteria,postres</field>
+        </record>
+        <record id="google_type_bakery" model="crm.google.place.type">
+            <field name="code">bakery</field>
+            <field name="name">Panaderías y Pastelerías</field>
+            <field name="keywords">panaderia,pasteleria,pan,pasteles,reposteria</field>
+        </record>
+        <record id="google_type_bar" model="crm.google.place.type">
+            <field name="code">bar</field>
+            <field name="name">Bares y Cantinas</field>
+            <field name="keywords">bar,cantina,cerveceria,pub,cocteleria</field>
+        </record>
+        <record id="google_type_lodging" model="crm.google.place.type">
+            <field name="code">lodging</field>
+            <field name="name">Hoteles y Hospedaje</field>
+            <field name="keywords">hotel,hospedaje,hostal,motel,posada,suites</field>
+        </record>
+        <record id="google_type_real_estate_agency" model="crm.google.place.type">
+            <field name="code">real_estate_agency</field>
+            <field name="name">Inmobiliarias / Bienes raíces</field>
+            <field name="keywords">inmobiliaria,bienes raices,casas,terrenos,renta,venta inmuebles</field>
+        </record>
+        <record id="google_type_insurance_agency" model="crm.google.place.type">
+            <field name="code">insurance_agency</field>
+            <field name="name">Agencias de seguros</field>
+            <field name="keywords">seguros,poliza,aseguradora,seguro de auto,seguro de gastos medicos</field>
+        </record>
+        <record id="google_type_bank" model="crm.google.place.type">
+            <field name="code">bank</field>
+            <field name="name">Bancos y Servicios financieros</field>
+            <field name="keywords">banco,caja popular,financiera,creditos,prestamos</field>
+        </record>
+        <record id="google_type_car_repair" model="crm.google.place.type">
+            <field name="code">car_repair</field>
+            <field name="name">Talleres mecánicos / Reparación automotriz</field>
+            <field name="keywords">mecanico,taller mecanico,afinacion,frenos,suspension,hojalateria</field>
+        </record>
+        <record id="google_type_car_dealer" model="crm.google.place.type">
+            <field name="code">car_dealer</field>
+            <field name="name">Agencias de autos / Concesionarios</field>
+            <field name="keywords">agencia de autos,concesionario,seminuevos,lote de autos,autos</field>
+        </record>
+        <record id="google_type_car_wash" model="crm.google.place.type">
+            <field name="code">car_wash</field>
+            <field name="name">Autolavados</field>
+            <field name="keywords">autolavado,car wash,lavado de autos,estetica automotriz</field>
+        </record>
+        <record id="google_type_gym" model="crm.google.place.type">
+            <field name="code">gym</field>
+            <field name="name">Gimnasios y Centros deportivos</field>
+            <field name="keywords">gimnasio,gym,fitness,crossfit,deportes,entrenamiento</field>
+        </record>
+        <record id="google_type_beauty_salon" model="crm.google.place.type">
+            <field name="code">beauty_salon</field>
+            <field name="name">Salones de belleza y Peluquerías</field>
+            <field name="keywords">salon de belleza,estetica,peluqueria,barberia,barber,unas</field>
+        </record>
+        <record id="google_type_spa" model="crm.google.place.type">
+            <field name="code">spa</field>
+            <field name="name">Spas y Centros de bienestar</field>
+            <field name="keywords">spa,masajes,relajacion,facial,bienestar</field>
+        </record>
+        <record id="google_type_store" model="crm.google.place.type">
+            <field name="code">store</field>
+            <field name="name">Tiendas y Comercio en general</field>
+            <field name="keywords">tienda,comercio,boutique,local comercial</field>
+        </record>
+        <record id="google_type_supermarket" model="crm.google.place.type">
+            <field name="code">supermarket</field>
+            <field name="name">Supermercados y Abarrotes</field>
+            <field name="keywords">supermercado,abarrotes,tienda de conveniencia,minisuper</field>
+        </record>
+        <record id="google_type_clothing_store" model="crm.google.place.type">
+            <field name="code">clothing_store</field>
+            <field name="name">Tiendas de ropa y calzado</field>
+            <field name="keywords">ropa,zapateria,calzado,vestidos,moda</field>
+        </record>
+        <record id="google_type_hardware_store" model="crm.google.place.type">
+            <field name="code">hardware_store</field>
+            <field name="name">Ferreterías y Tlapalerías</field>
+            <field name="keywords">ferreteria,tlapaleria,herramientas,materiales,tornillos</field>
+        </record>
+        <record id="google_type_electronics_store" model="crm.google.place.type">
+            <field name="code">electronics_store</field>
+            <field name="name">Tiendas de electrónica y computación</field>
+            <field name="keywords">electronica,computadoras,celulares,tecnologia,reparacion celulares</field>
+        </record>
+        <record id="google_type_furniture_store" model="crm.google.place.type">
+            <field name="code">furniture_store</field>
+            <field name="name">Mueblerías y Decoración</field>
+            <field name="keywords">muebleria,muebles,decoracion,cocinas,colchones</field>
+        </record>
+        <record id="google_type_school" model="crm.google.place.type">
+            <field name="code">school</field>
+            <field name="name">Escuelas y Colegios</field>
+            <field name="keywords">escuela,colegio,instituto,primaria,secundaria,preparatoria</field>
+        </record>
+        <record id="google_type_university" model="crm.google.place.type">
+            <field name="code">university</field>
+            <field name="name">Universidades y Educación superior</field>
+            <field name="keywords">universidad,facultad,posgrado,licenciatura,campus</field>
+        </record>
+        <record id="google_type_travel_agency" model="crm.google.place.type">
+            <field name="code">travel_agency</field>
+            <field name="name">Agencias de viajes</field>
+            <field name="keywords">agencia de viajes,viajes,tours,boletos,vacaciones</field>
+        </record>
+        <record id="google_type_locksmith" model="crm.google.place.type">
+            <field name="code">locksmith</field>
+            <field name="name">Cerrajerías</field>
+            <field name="keywords">cerrajeria,cerrajero,llaves,cerraduras,duplicados</field>
+        </record>
+        <record id="google_type_electrician" model="crm.google.place.type">
+            <field name="code">electrician</field>
+            <field name="name">Electricistas y Servicios eléctricos</field>
+            <field name="keywords">electricista,electricidad,instalacion electrica,subestaciones</field>
+        </record>
+        <record id="google_type_plumber" model="crm.google.place.type">
+            <field name="code">plumber</field>
+            <field name="name">Plomeros y Fontanería</field>
+            <field name="keywords">plomero,plomeria,fontanero,tuberias,fugas</field>
+        </record>
+        <record id="google_type_roofing_contractor" model="crm.google.place.type">
+            <field name="code">roofing_contractor</field>
+            <field name="name">Impermeabilización y Techados</field>
+            <field name="keywords">impermeabilizacion,techos,laminas,estructuras metalicas</field>
+        </record>
+    </data>
+</odoo>

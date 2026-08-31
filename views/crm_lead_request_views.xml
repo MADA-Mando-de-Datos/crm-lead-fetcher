@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="crm_lead_request_view_form" model="ir.ui.view">
+        <field name="name">crm.lead.request.form</field>
+        <field name="model">crm.lead.request</field>
+        <field name="arch" type="xml">
+            <form string="Generar Leads">
+                    <header>
+                        <button name="action_submit" type="object" string="Generar Leads" class="btn-primary" icon="fa-magic"/>
+                        <button name="action_draft" type="object" string="Nueva búsqueda" class="btn-secondary" invisible="state == 'draft'"/>
+                        <button name="action_delete_with_leads" type="object" string="Eliminar solicitud y leads" class="btn-danger" icon="fa-trash"
+                            confirm="¿Eliminar esta solicitud y todos los leads asociados de CRM? Esta acción no se puede deshacer."
+                            invisible="state != 'done' or lead_count == 0"/>
+                    </header>
+                <sheet>
+                    <div class="alert alert-info" role="status" invisible="state != 'draft'">
+                        <i class="fa fa-info-circle" title="Información"/> Seleccione la fuente de datos y complete los filtros para buscar leads.
+                    </div>
+                    <div class="alert alert-danger" role="alert" invisible="state != 'error'">
+                        <field name="error_msg" readonly="1"/>
+                        <div class="mt-2" invisible="error_type != 'connection'">
+                            <button name="action_submit" type="object" string="Reintentar" class="btn btn-sm btn-outline-danger" icon="fa-refresh"/>
+                        </div>
+                    </div>
+                    <div class="alert alert-success" role="status" invisible="state != 'done'">
+                        <i class="fa fa-check-circle" title="Completado"/> <b>¡Completado!</b> Se generaron <field name="lead_count" class="fw-bold"/> leads.
+                        <div class="mt-2">
+                            <button name="crm_lead_fetcher.action_view_lead_leads" type="action" class="btn btn-sm btn-outline-primary" invisible="lead_type != 'lead'">Ver Leads</button>
+                            <button name="crm_lead_fetcher.action_view_lead_opportunities" type="action" class="btn btn-sm btn-outline-primary" invisible="lead_type != 'opportunity'">Ver Oportunidades</button>
+                            <button name="action_export_csv" type="object" class="btn btn-sm btn-outline-success" icon="fa-download">Exportar CSV</button>
+                            <button name="action_draft" type="object" class="btn btn-sm btn-secondary" confirm="Se eliminarán los leads generados de esta solicitud para comenzar de cero. ¿Continuar?">Nueva búsqueda</button>
+                        </div>
+                    </div>
+
+                    <group>
+                        <group string="Fuente y configuración">
+                            <field name="source_key" readonly="state != 'draft'"/>
+                            <field name="lead_type" readonly="state != 'draft'"/>
+                            <field name="lead_number" readonly="state != 'draft'"/>
+                            <field name="team_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="user_id" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                            <field name="lead_count" readonly="1" invisible="state != 'done'"/>
+                        </group>
+                    </group>
+
+                    <!-- ===================== SECCIÓN DENUE ===================== -->
+                    <notebook invisible="source_key != 'denue'">
+                        <page string="Filtros DENUE" name="denue_filters">
+                            <group>
+                                <group string="Ubicación y sectores">
+                                    <field name="search_type" readonly="state != 'draft'"/>
+                                    <field name="entidad_ids" widget="many2many_tags" options="{'no_create': True, 'no_open': True}"
+                                        domain="[('active', '=', True)]"
+                                        required="source_key == 'denue'"
+                                        help="Estados donde se realizará la búsqueda"/>
+                                    <field name="sector_ids" widget="many2many_tags" options="{'no_create': True, 'no_open': True}"
+                                        required="search_type == 'by_state'"/>
+                                    <field name="municipio" placeholder="Ej: San Luis Potosí, Soledad..."/>
+                                </group>
+                                <group string="Parámetros de búsqueda">
+                                    <field name="actividad"
+                                        invisible="search_type not in ('by_activity_state', 'by_geo')"
+                                        placeholder="Ej: restaurante, ferretería, dentista"/>
+                                    <field name="nombre_busqueda"
+                                        invisible="search_type != 'by_name_state'"
+                                        placeholder="Nombre comercial o razón social"/>
+                                    <div invisible="search_type != 'by_geo'" class="o_row">
+                                        <label for="latitud" string="Ubicación (lat / lon)"/>
+                                        <field name="latitud" nolabel="1"/>
+                                        <field name="longitud" nolabel="1"/>
+                                    </div>
+                                    <field name="distancia_metros"
+                                        invisible="search_type != 'by_geo'"
+                                        placeholder="Máximo 5,000 m"/>
+                                </group>
+                            </group>
+                            <group string="Filtros de tamaño (estrato)">
+                                <div class="o_row">
+                                    <label for="estrato_min" string="Rango de estrato"/>
+                                    <field name="estrato_min"/>
+                                    <field name="estrato_min_label" readonly="1" invisible="not estrato_min" class="text-muted"/>
+                                    <span> a </span>
+                                    <field name="estrato_max"/>
+                                    <field name="estrato_max_label" readonly="1" invisible="not estrato_max" class="text-muted"/>
+                                </div>
+                                <div class="text-muted" style="font-size:0.85em;">
+                                    Estrato = tamaño según personal ocupado:
+                                    1=0-5 · 2=6-10 · 3=11-30 · 4=31-50 · 5=51-100 · 6=101-250 · 7=251+
+                                </div>
+                            </group>
+                        </page>
+                    </notebook>
+
+                    <!-- ===================== SECCIÓN YELP ===================== -->
+                    <notebook invisible="source_key != 'yelp'">
+                        <page string="Filtros Yelp" name="yelp_filters">
+                            <group>
+                                <group string="Búsqueda">
+                                    <field name="yelp_term" placeholder="Ej: restaurante italiano, plomería"/>
+                                    <field name="yelp_location" required="source_key == 'yelp'"
+                                        placeholder="Ej: CDMX, Monterrey, SLP"/>
+                                    <field name="yelp_categories" widget="many2many_tags" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                                <group string="Filtros avanzados">
+                                    <field name="yelp_radius" placeholder="Máximo 40,000 metros"/>
+                                    <field name="yelp_price"/>
+                                    <field name="yelp_sort_by"/>
+                                    <field name="yelp_open_now"/>
+                                    <field name="yelp_transactions"/>
+                                    <field name="yelp_attributes"/>
+                                    <field name="yelp_min_rating" placeholder="0 = sin filtro"/>
+                                    <field name="yelp_min_reviews" placeholder="0 = sin filtro"/>
+                                    <div invisible="yelp_sort_by != 'distance'" class="o_row">
+                                        <label for="yelp_latitude" string="Coordenadas (distancia)"/>
+                                        <field name="yelp_latitude" nolabel="1" placeholder="lat"/>
+                                        <field name="yelp_longitude" nolabel="1" placeholder="lon"/>
+                                    </div>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                    <!-- ===================== SECCIÓN GOOGLE PLACES ===================== -->
+                    <notebook invisible="source_key != 'google'">
+                        <page string="Filtros Google Places" name="google_filters">
+                            <group>
+                                <group string="Búsqueda y Ubicación">
+                                    <field name="google_query" placeholder="Ej: despacho contable, restaurante, dentista"/>
+                                    <field name="google_location" required="source_key == 'google'"
+                                        placeholder="Ej: San Luis Potosí, SLP, Querétaro"/>
+                                    <field name="google_place_type_ids" widget="many2many_tags" options="{'no_create': True, 'no_open': True}"/>
+                                </group>
+                                <group string="Filtros avanzados">
+                                    <field name="google_radius" placeholder="Máximo 50,000 metros (default 5,000)"/>
+                                    <field name="google_min_price"/>
+                                    <field name="google_max_price"/>
+                                    <field name="google_open_now"/>
+                                    <field name="google_min_rating" placeholder="0 = sin filtro (1 a 5)"/>
+                                    <field name="google_min_reviews" placeholder="0 = sin filtro"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="crm_lead_request_view_tree" model="ir.ui.view">
+        <field name="name">crm.lead.request.list</field>
+        <field name="model">crm.lead.request</field>
+        <field name="arch" type="xml">
+            <list string="Solicitudes de Minado de Leads">
+                <field name="name"/>
+                <field name="source_key" widget="badge" decoration-info="source_key == 'denue'" decoration-warning="source_key == 'yelp'" decoration-success="source_key == 'google'"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'" decoration-danger="state == 'error'" decoration-warning="state == 'draft'"/>
+                <field name="lead_count" string="Leads generados"/>
+                <field name="lead_type" widget="badge" decoration-info="lead_type == 'lead'" decoration-primary="lead_type == 'opportunity'"/>
+                <field name="team_id" optional="show"/>
+                <field name="user_id" optional="show"/>
+                <field name="create_date"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="crm_lead_request_action" model="ir.actions.act_window">
+        <field name="name">Minado de Leads</field>
+        <field name="res_model">crm.lead.request</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_delete_with_leads_server" model="ir.actions.server">
+        <field name="name">Eliminar solicitud y leads asociados</field>
+        <field name="model_id" ref="model_crm_lead_request"/>
+        <field name="state">code</field>
+        <field name="code">for record in records: record.action_delete_with_leads()</field>
+    </record>
+
+    <menuitem
+        id="crm_menu_lead_generation"
+        name="Minado de Leads"
+        parent="crm.crm_menu_config"
+        sequence="21"/>
+    <menuitem
+        id="crm_lead_request_menu_action"
+        action="crm_lead_request_action"
+        parent="crm_menu_lead_generation"
+        sequence="0"/>
+</odoo>

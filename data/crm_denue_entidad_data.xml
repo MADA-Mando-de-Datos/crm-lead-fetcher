@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- 32 Entidades Federativas de México (códigos INEGI) -->
+        <record id="entidad_01" model="crm.denue.entidad">
+            <field name="code">01</field>
+            <field name="name">Aguascalientes</field>
+        </record>
+        <record id="entidad_02" model="crm.denue.entidad">
+            <field name="code">02</field>
+            <field name="name">Baja California</field>
+        </record>
+        <record id="entidad_03" model="crm.denue.entidad">
+            <field name="code">03</field>
+            <field name="name">Baja California Sur</field>
+        </record>
+        <record id="entidad_04" model="crm.denue.entidad">
+            <field name="code">04</field>
+            <field name="name">Campeche</field>
+        </record>
+        <record id="entidad_05" model="crm.denue.entidad">
+            <field name="code">05</field>
+            <field name="name">Coahuila de Zaragoza</field>
+        </record>
+        <record id="entidad_06" model="crm.denue.entidad">
+            <field name="code">06</field>
+            <field name="name">Colima</field>
+        </record>
+        <record id="entidad_07" model="crm.denue.entidad">
+            <field name="code">07</field>
+            <field name="name">Chiapas</field>
+        </record>
+        <record id="entidad_08" model="crm.denue.entidad">
+            <field name="code">08</field>
+            <field name="name">Chihuahua</field>
+        </record>
+        <record id="entidad_09" model="crm.denue.entidad">
+            <field name="code">09</field>
+            <field name="name">Ciudad de México</field>
+        </record>
+        <record id="entidad_10" model="crm.denue.entidad">
+            <field name="code">10</field>
+            <field name="name">Durango</field>
+        </record>
+        <record id="entidad_11" model="crm.denue.entidad">
+            <field name="code">11</field>
+            <field name="name">Guanajuato</field>
+        </record>
+        <record id="entidad_12" model="crm.denue.entidad">
+            <field name="code">12</field>
+            <field name="name">Guerrero</field>
+        </record>
+        <record id="entidad_13" model="crm.denue.entidad">
+            <field name="code">13</field>
+            <field name="name">Hidalgo</field>
+        </record>
+        <record id="entidad_14" model="crm.denue.entidad">
+            <field name="code">14</field>
+            <field name="name">Jalisco</field>
+        </record>
+        <record id="entidad_15" model="crm.denue.entidad">
+            <field name="code">15</field>
+            <field name="name">México</field>
+        </record>
+        <record id="entidad_16" model="crm.denue.entidad">
+            <field name="code">16</field>
+            <field name="name">Michoacán de Ocampo</field>
+        </record>
+        <record id="entidad_17" model="crm.denue.entidad">
+            <field name="code">17</field>
+            <field name="name">Morelos</field>
+        </record>
+        <record id="entidad_18" model="crm.denue.entidad">
+            <field name="code">18</field>
+            <field name="name">Nayarit</field>
+        </record>
+        <record id="entidad_19" model="crm.denue.entidad">
+            <field name="code">19</field>
+            <field name="name">Nuevo León</field>
+        </record>
+        <record id="entidad_20" model="crm.denue.entidad">
+            <field name="code">20</field>
+            <field name="name">Oaxaca</field>
+        </record>
+        <record id="entidad_21" model="crm.denue.entidad">
+            <field name="code">21</field>
+            <field name="name">Puebla</field>
+        </record>
+        <record id="entidad_22" model="crm.denue.entidad">
+            <field name="code">22</field>
+            <field name="name">Querétaro</field>
+        </record>
+        <record id="entidad_23" model="crm.denue.entidad">
+            <field name="code">23</field>
+            <field name="name">Quintana Roo</field>
+        </record>
+        <record id="entidad_24" model="crm.denue.entidad">
+            <field name="code">24</field>
+            <field name="name">San Luis Potosí</field>
+        </record>
+        <record id="entidad_25" model="crm.denue.entidad">
+            <field name="code">25</field>
+            <field name="name">Sinaloa</field>
+        </record>
+        <record id="entidad_26" model="crm.denue.entidad">
+            <field name="code">26</field>
+            <field name="name">Sonora</field>
+        </record>
+        <record id="entidad_27" model="crm.denue.entidad">
+            <field name="code">27</field>
+            <field name="name">Tabasco</field>
+        </record>
+        <record id="entidad_28" model="crm.denue.entidad">
+            <field name="code">28</field>
+            <field name="name">Tamaulipas</field>
+        </record>
+        <record id="entidad_29" model="crm.denue.entidad">
+            <field name="code">29</field>
+            <field name="name">Tlaxcala</field>
+        </record>
+        <record id="entidad_30" model="crm.denue.entidad">
+            <field name="code">30</field>
+            <field name="name">Veracruz de Ignacio de la Llave</field>
+        </record>
+        <record id="entidad_31" model="crm.denue.entidad">
+            <field name="code">31</field>
+            <field name="name">Yucatán</field>
+        </record>
+        <record id="entidad_32" model="crm.denue.entidad">
+            <field name="code">32</field>
+            <field name="name">Zacatecas</field>
+        </record>
+    </data>
+</odoo>

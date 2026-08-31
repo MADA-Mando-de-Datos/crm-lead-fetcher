@@ -1,0 +1,864 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+        <!-- SECTOR 11: AGRICULTURA, CRÍA Y EXPLOTACIÓN DE ANIMALES,          -->
+        <!-- APROVECHAMIENTO FORESTAL, PESCA Y CAZA                          -->
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+
+        <record id="denue_sector_111" model="crm.denue.sector">
+            <field name="code">111</field>
+            <field name="name">Cultivo de cereales</field>
+            <field name="sector_code">11</field>
+            <field name="sector_name">Agricultura, cría y explotación de animales, aprovechamiento forestal, pesca y caza</field>
+            <field name="description">Producción de maíz, sorgo, trigo, cebada, avena, centeno y otros granos</field>
+            <field name="keywords">maiz,sorgo,trigo,cebada,avena,cereal,grano,siembra,cosecha</field>
+        </record>
+        <record id="denue_sector_112" model="crm.denue.sector">
+            <field name="code">112</field>
+            <field name="name">Cultivo de soya, girasol y otros oleaginosos</field>
+            <field name="sector_code">11</field>
+            <field name="sector_name">Agricultura, cría y explotación de animales, aprovechamiento forestal, pesca y caza</field>
+            <field name="description">Producción de soya, girasol, ajonjolí, cártamo y otras plantas oleaginosas</field>
+            <field name="keywords">soya,girasol,oleaginoso,ajonjoli,cartamo,aceite</field>
+        </record>
+        <record id="denue_sector_113" model="crm.denue.sector">
+            <field name="code">113</field>
+            <field name="name">Cultivo de caña de azúcar</field>
+            <field name="sector_code">11</field>
+            <field name="sector_name">Agricultura, cría y explotación de animales, aprovechamiento forestal, pesca y caza</field>
+            <field name="description">Producción de caña de azúcar para azúcar, alcohol y derivados</field>
+            <field name="keywords">caña,azucar,trapiche,alcohol,etanol,azucarero</field>
+        </record>
+        <record id="denue_sector_114" model="crm.denue.sector">
+            <field name="code">114</field>
+            <field name="name">Cultivo de tabaco</field>
+            <field name="sector_code">11</field>
+            <field name="sector_name">Agricultura, cría y explotación de animales, aprovechamiento forestal, pesca y caza</field>
+            <field name="description">Producción de tabaco para cigarros, cigarrillos y productos de tabaco</field>
+            <field name="keywords">tabaco,cigarro,cigarrillo,tabacalero</field>
+        </record>
+        <record id="denue_sector_115" model="crm.denue.sector">
+            <field name="code">115</field>
+            <field name="name">Cultivo de hortalizas, flores, plantas ornamentales y semillas</field>
+            <field name="sector_code">11</field>
+            <field name="sector_name">Agricultura, cría y explotación de animales, aprovechamiento forestal, pesca y caza</field>
+            <field name="description">Producción de verduras, flores, plantas decorativas y semillas para siembra</field>
+            <field name="keywords">hortaliza,verdura,flores,plantas,ornamental,semilla,invernadero,vivero</field>
+        </record>
+        <record id="denue_sector_116" model="crm.denue.sector">
+            <field name="code">116</field>
+            <field name="name">Cultivo de frutales y nueces</field>
+            <field name="sector_code">11</field>
+            <field name="sector_name">Agricultura, cría y explotación de animales, aprovechamiento forestal, pesca y caza</field>
+            <field name="description">Producción de frutas, nueces y productos frutales</field>
+            <field name="keywords">fruta,frutal,nuez,manzana,limon,naranja,mango,aguacate,huerto</field>
+        </record>
+        <record id="denue_sector_117" model="crm.denue.sector">
+            <field name="code">117</field>
+            <field name="name">Cultivo de leguminosas y hortalizas</field>
+            <field name="sector_code">11</field>
+            <field name="sector_name">Agricultura, cría y explotación de animales, aprovechamiento forestal, pesca y caza</field>
+            <field name="description">Producción de frijol, chile, jitomate, calabaza y otras hortalizas</field>
+            <field name="keywords">frijol,leguminosa,chile,jitomate,calabaza,vegano,vegetal</field>
+        </record>
+        <record id="denue_sector_118" model="crm.denue.sector">
+            <field name="code">118</field>
+            <field name="name">Cultivo de plantas para la obtención de fibras</field>
+            <field name="sector_code">11</field>
+            <field name="sector_name">Agricultura, cría y explotación de animales, aprovechamiento forestal, pesca y caza</field>
+            <field name="description">Producción de algodón, henequén, yute y otras fibras naturales</field>
+            <field name="keywords">algodon,fibra,henequen,yute,fibra natural</field>
+        </record>
+        <record id="denue_sector_119" model="crm.denue.sector">
+            <field name="code">119</field>
+            <field name="name">Otros cultivos</field>
+            <field name="sector_code">11</field>
+            <field name="sector_name">Agricultura, cría y explotación de animales, aprovechamiento forestal, pesca y caza</field>
+            <field name="description">Cultivos no clasificados en otra parte: plantas medicinales, aromáticas, cupcakes, etc.</field>
+            <field name="keywords">medicinal,aromatica,cultivo diverso,plantas</field>
+        </record>
+        <record id="denue_sector_121" model="crm.denue.sector">
+            <field name="code">121</field>
+            <field name="name">Cría y explotación de animales</field>
+            <field name="sector_code">11</field>
+            <field name="sector_name">Agricultura, cría y explotación de animales, aprovechamiento forestal, pesca y caza</field>
+            <field name="description">Ganadería bovina, porcina, ovina, caprina y otros animales de granja</field>
+            <field name="keywords">ganaderia,bovino,porcino,ovino,caprino,ganado,vaca,cerdo,cabra,oveja,granja</field>
+        </record>
+        <record id="denue_sector_122" model="crm.denue.sector">
+            <field name="code">122</field>
+            <field name="name">Producción avícola</field>
+            <field name="sector_code">11</field>
+            <field name="sector_name">Agricultura, cría y explotación de animales, aprovechamiento forestal, pesca y caza</field>
+            <field name="description">Producción de pollo, huevo, pavo y otras aves de corral</field>
+            <field name="keywords">pollo,avo,pavo,aves,corral,gallina,huevo,granja avicola</field>
+        </record>
+        <record id="denue_sector_123" model="crm.denue.sector">
+            <field name="code">123</field>
+            <field name="name">Explotación de silvicultura</field>
+            <field name="sector_code">11</field>
+            <field name="sector_name">Agricultura, cría y explotación de animales, aprovechamiento forestal, pesca y caza</field>
+            <field name="description">Aprovechamiento forestal: madera, resina, leña, carbón vegetal</field>
+            <field name="keywords">silvicultura,forestal,madera,bosque,aserradero,carbon vegetal,resina</field>
+        </record>
+        <record id="denue_sector_124" model="crm.denue.sector">
+            <field name="code">124</field>
+            <field name="name">Pesca y acuacultura</field>
+            <field name="sector_code">11</field>
+            <field name="sector_name">Agricultura, cría y explotación de animales, aprovechamiento forestal, pesca y caza</field>
+            <field name="description">Captura de peces, mariscos, crustáceos y acuacultura</field>
+            <field name="keywords">pesca,pescado,marisco,acuacultura,camaron,tilapia,bacamontes</field>
+        </record>
+
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+        <!-- SECTOR 21: MINERÍA                                              -->
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+
+        <record id="denue_sector_211" model="crm.denue.sector">
+            <field name="code">211</field>
+            <field name="name">Minería y explotación de minerales metálicos</field>
+            <field name="sector_code">21</field>
+            <field name="sector_name">Minería</field>
+            <field name="description">Extracción de oro, plata, cobre, hierro, zinc y otros metales</field>
+            <field name="keywords">oro,plata,cobre,hierro,zinc,metal,mina,extraccion,mineral</field>
+        </record>
+        <record id="denue_sector_212" model="crm.denue.sector">
+            <field name="code">212</field>
+            <field name="name">Minería de minerales no metálicos</field>
+            <field name="sector_code">21</field>
+            <field name="sector_name">Minería</field>
+            <field name="description">Extracción de piedra, arena, grava, arcilla, arena silica y sal</field>
+            <field name="keywords">piedra,arena,grava,arcilla,sal,cantera,no metalico,caliza</field>
+        </record>
+        <record id="denue_sector_213" model="crm.denue.sector">
+            <field name="code">213</field>
+            <field name="name">Servicios de apoyo a la minería</field>
+            <field name="sector_code">21</field>
+            <field name="sector_name">Minería</field>
+            <field name="description">Servicios de perforación, exploración y mantenimiento para minas</field>
+            <field name="keywords">perforacion,exploracion,servicios mineros,mantenido mina</field>
+        </record>
+
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+        <!-- SECTOR 22: GENERACIÓN, TRANSMISIÓN Y DISTRIBUCIÓN DE ENERGÍA     -->
+        <!-- ELÉCTRICA, AGUA Y GAS                                            -->
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+
+        <record id="denue_sector_221" model="crm.denue.sector">
+            <field name="code">221</field>
+            <field name="name">Generación de energía eléctrica</field>
+            <field name="sector_code">22</field>
+            <field name="sector_name">Generación, transmisión y distribución de energía eléctrica, agua y gas</field>
+            <field name="description">Plantas de generación eléctrica: termoeléctricas, hidroeléctricas, eólicas, solares</field>
+            <field name="keywords">generacion,electrica,planta,termoelectrica,hydroelectrica,eolica,solar,presas</field>
+        </record>
+        <record id="denue_sector_222" model="crm.denue.sector">
+            <field name="code">222</field>
+            <field name="name">Transmisión de energía eléctrica</field>
+            <field name="sector_code">22</field>
+            <field name="sector_name">Generación, transmisión y distribución de energía eléctrica, agua y gas</field>
+            <field name="description">Líneas de transmisión de alta tensión y subestaciones eléctricas</field>
+            <field name="keywords">transmision,alta tension,subestacion,linea electrica,torre</field>
+        </record>
+        <record id="denue_sector_223" model="crm.denue.sector">
+            <field name="code">223</field>
+            <field name="name">Distribución de energía eléctrica</field>
+            <field name="sector_code">22</field>
+            <field name="sector_name">Generación, transmisión y distribución de energía eléctrica, agua y gas</field>
+            <field name="description">Distribución de electricidad a usuarios finales: CFE y distribuidoras</field>
+            <field name="keywords">distribucion,electricidad,CFE,medidor,suministro,potencia</field>
+        </record>
+        <record id="denue_sector_224" model="crm.denue.sector">
+            <field name="code">224</field>
+            <field name="name">Distribución de gas natural por ductos</field>
+            <field name="sector_code">22</field>
+            <field name="sector_name">Generación, transmisión y distribución de energía eléctrica, agua y gas</field>
+            <field name="description">Transporte y distribución de gas natural mediante ductos</field>
+            <field name="keywords">gas,natural,ducto,distribucion,gasoducto</field>
+        </record>
+        <record id="denue_sector_225" model="crm.denue.sector">
+            <field name="code">225</field>
+            <field name="name">Distribución de agua natural por ductos</field>
+            <field name="sector_code">22</field>
+            <field name="sector_name">Generación, transmisión y distribución de energía eléctrica, agua y gas</field>
+            <field name="description">Distribución de agua potable mediante redes de tubería</field>
+            <field name="keywords">agua,potable,ducto,distribucion,tuberia,acueducto,condensa</field>
+        </record>
+
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+        <!-- SECTOR 23: CONSTRUCCIÓN                                         -->
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+
+        <record id="denue_sector_231" model="crm.denue.sector">
+            <field name="code">231</field>
+            <field name="name">Edificación</field>
+            <field name="sector_code">23</field>
+            <field name="sector_name">Construcción</field>
+            <field name="description">Construcción de edificios residenciales, comerciales e industriales</field>
+            <field name="keywords">edificacion,construccion,edificio,vivienda,casa,departamento,obra civil,inmobiliaria</field>
+        </record>
+        <record id="denue_sector_232" model="crm.denue.sector">
+            <field name="code">232</field>
+            <field name="name">Ingeniería civil y obra pública</field>
+            <field name="sector_code">23</field>
+            <field name="sector_name">Construcción</field>
+            <field name="description">Obras de infraestructura: carreteras, puentes, presas, túneles</field>
+            <field name="keywords">ingenieria,civil,obra publica,carretera,puente,presa,tunel,infraestructura</field>
+        </record>
+        <record id="denue_sector_233" model="crm.denue.sector">
+            <field name="code">233</field>
+            <field name="name">Instalaciones y mantenimiento</field>
+            <field name="sector_code">23</field>
+            <field name="sector_name">Construcción</field>
+            <field name="description">Instalaciones eléctricas, hidráulicas, de gas y climatización en edificios</field>
+            <field name="keywords">instalacion,mantenimiento,electrico,plomeria,clima,aires acondicionado,gas</field>
+        </record>
+
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+        <!-- SECTOR 31-33: INDUSTRIAS MANUFACTURERAS                          -->
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+
+        <record id="denue_sector_311" model="crm.denue.sector">
+            <field name="code">311</field>
+            <field name="name">Elaboración de alimentos</field>
+            <field name="sector_code">31</field>
+            <field name="sector_name">Industrias manufactureras</field>
+            <field name="description">Procesamiento de alimentos: panadería, lácteos, carnes, conservas, congelados</field>
+            <field name="keywords">alimentos,comida,procesamiento,conservas,lacteos,carnes,panaderia,harina,aceite</field>
+        </record>
+        <record id="denue_sector_312" model="crm.denue.sector">
+            <field name="code">312</field>
+            <field name="name">Elaboración de bebidas y tabaco</field>
+            <field name="sector_code">31</field>
+            <field name="sector_name">Industrias manufactureras</field>
+            <field name="description">Producción de refrescos, cerveza, tequila, mezcal, vino y productos de tabaco</field>
+            <field name="keywords">bebidas,refrescos,cerveza,tequila,mezcal,vino,tabaco,licor,agua embotellada</field>
+        </record>
+        <record id="denue_sector_313" model="crm.denue.sector">
+            <field name="code">313</field>
+            <field name="name">Fabricación de textiles y acabado de textiles</field>
+            <field name="sector_code">31</field>
+            <field name="sector_name">Industrias manufactureras</field>
+            <field name="description">Producción de hilos, telas, tejidos y acabado textil</field>
+            <field name="keywords">textiles,tela,hilado,tejido,acabado,confeccion,fabrica textil</field>
+        </record>
+        <record id="denue_sector_314" model="crm.denue.sector">
+            <field name="code">314</field>
+            <field name="name">Fabricación de prendas de vestir</field>
+            <field name="sector_code">31</field>
+            <field name="sector_name">Industrias manufactureras</field>
+            <field name="description">Confección de ropa, uniformes, calzado y accesorios de vestir</field>
+            <field name="keywords">vestir,ropa,prendas,confeccion,moda,uniformes,calzado,zapato</field>
+        </record>
+        <record id="denue_sector_315" model="crm.denue.sector">
+            <field name="code">315</field>
+            <field name="name">Curtido y acabado de cuero y piel, y fabricación de artículos de cuero y piel</field>
+            <field name="sector_code">31</field>
+            <field name="sector_name">Industrias manufactureras</field>
+            <field name="description">Procesamiento de cuero y producción de bolsos, cinturones, calzado de cuero</field>
+            <field name="keywords">cuero,piel,curtido,calzado,bolsos,articulos de cuero,cinturon</field>
+        </record>
+        <record id="denue_sector_316" model="crm.denue.sector">
+            <field name="code">316</field>
+            <field name="name">Fabricación de productos de madera</field>
+            <field name="sector_code">31</field>
+            <field name="sector_name">Industrias manufactureras</field>
+            <field name="description">Producción de muebles, puertas, ventanas, pisos de madera</field>
+            <field name="keywords">madera,mueble,carpinteria,aserradero,piso,puerta,ventana,chipboard</field>
+        </record>
+        <record id="denue_sector_317" model="crm.denue.sector">
+            <field name="code">317</field>
+            <field name="name">Fabricación de papel</field>
+            <field name="sector_code">31</field>
+            <field name="sector_name">Industrias manufactureras</field>
+            <field name="description">Producción de papel, cartón, cajas de cartón y productos de papel</field>
+            <field name="keywords">papel,celulosa,carton,papeleria,caja,empaque,impresion</field>
+        </record>
+        <record id="denue_sector_318" model="crm.denue.sector">
+            <field name="code">318</field>
+            <field name="name">Impresión e industrias conexas</field>
+            <field name="sector_code">31</field>
+            <field name="sector_name">Industrias manufactureras</field>
+            <field name="description">Servicios de imprenta, litografía, encuadernación y reproducción de medios</field>
+            <field name="keywords">imprenta,impresion,editorial,publicaciones,litografia,cuadernos,libros</field>
+        </record>
+        <record id="denue_sector_319" model="crm.denue.sector">
+            <field name="code">319</field>
+            <field name="name">Fabricación de productos derivados del petróleo y del carbón</field>
+            <field name="sector_code">31</field>
+            <field name="sector_name">Industrias manufactureras</field>
+            <field name="description">Refinación de petróleo, producción de gasolinas, diésel, asfalto y coque</field>
+            <field name="keywords">petroleo,refineria,combustible,derivados,carbon,quimicos basicos,gasolina,diesel</field>
+        </record>
+        <record id="denue_sector_321" model="crm.denue.sector">
+            <field name="code">321</field>
+            <field name="name">Fabricación de productos químicos</field>
+            <field name="sector_code">32</field>
+            <field name="sector_name">Industrias manufactureras</field>
+            <field name="description">Producción de pintura, fertilizantes, plaguicidas, productos farmacéuticos, cosméticos</field>
+            <field name="keywords">quimicos,pintura,fertilizante,pesticida,farmaceutico,cosmetico,detergente,medicamento</field>
+        </record>
+        <record id="denue_sector_322" model="crm.denue.sector">
+            <field name="code">322</field>
+            <field name="name">Fabricación de productos de hule y plástico</field>
+            <field name="sector_code">32</field>
+            <field name="sector_name">Industrias manufactureras</field>
+            <field name="description">Producción de llantas, envases, bolsas, tubería de plástico y hule</field>
+            <field name="keywords">hule,plastico,resina,polimero,neumatico,envase,bolsa,llanta,tubo</field>
+        </record>
+        <record id="denue_sector_323" model="crm.denue.sector">
+            <field name="code">323</field>
+            <field name="name">Fabricación de productos de minerales no metálicos</field>
+            <field name="sector_code">32</field>
+            <field name="sector_name">Industrias manufactureras</field>
+            <field name="description">Producción de cemento, concreto, vidrio, cerámica, ladrillo, yeso</field>
+            <field name="keywords">minerales,cemento,concreto,vidrio,ceramica,ladrillo,yeso,loza</field>
+        </record>
+        <record id="denue_sector_324" model="crm.denue.sector">
+            <field name="code">324</field>
+            <field name="name">Industrias metálicas básicas</field>
+            <field name="sector_code">32</field>
+            <field name="sector_name">Industrias manufactureras</field>
+            <field name="description">Producción de acero, hierro, aluminio, cobre y otros metales primarios</field>
+            <field name="keywords">metal,acero,hierro,fundicion,aluminio,cobre,metalurgico,laminado</field>
+        </record>
+        <record id="denue_sector_325" model="crm.denue.sector">
+            <field name="code">325</field>
+            <field name="name">Fabricación de productos metálicos</field>
+            <field name="sector_code">32</field>
+            <field name="sector_name">Industrias manufactureras</field>
+            <field name="description">Producción de estructuras metálicas, herramientas, tornillería, calderería</field>
+            <field name="keywords">productos metalicos,estructura metalica,herramienta,tornilleria,caldereria,recorte</field>
+        </record>
+        <record id="denue_sector_326" model="crm.denue.sector">
+            <field name="code">326</field>
+            <field name="name">Fabricación de maquinaria y equipo</field>
+            <field name="sector_code">32</field>
+            <field name="sector_name">Industrias manufactureras</field>
+            <field name="description">Producción de maquinaria industrial, bombas, compresores, maquinaria agrícola</field>
+            <field name="keywords">maquinaria,equipo industrial,bomba,compresor,maquina herramienta,agricola</field>
+        </record>
+        <record id="denue_sector_327" model="crm.denue.sector">
+            <field name="code">327</field>
+            <field name="name">Fabricación de equipo de computación, comunicación, medición y otros equipos electrónicos</field>
+            <field name="sector_code">32</field>
+            <field name="sector_name">Industrias manufactureras</field>
+            <field name="description">Producción de computadoras, celulares, equipos de red, dispositivos médicos</field>
+            <field name="keywords">computacion,electronica,telecomunicacion,medicion,dispositivo medico,tecnologia,informatica</field>
+        </record>
+        <record id="denue_sector_328" model="crm.denue.sector">
+            <field name="code">328</field>
+            <field name="name">Fabricación de accesorios, aparatos eléctricos y equipo de generación de energía eléctrica</field>
+            <field name="sector_code">32</field>
+            <field name="sector_name">Industrias manufactureras</field>
+            <field name="description">Producción de electrodomésticos, generadores, transformadores, cableado</field>
+            <field name="keywords">electrodomestico,aparato electrico,generador,transformador,cable,ventilador,refrigerador</field>
+        </record>
+        <record id="denue_sector_329" model="crm.denue.sector">
+            <field name="code">329</field>
+            <field name="name">Fabricación de equipo de transporte</field>
+            <field name="sector_code">32</field>
+            <field name="sector_name">Industrias manufactureras</field>
+            <field name="description">Producción de automóviles, camiones, autobuses, aviones, barcos</field>
+            <field name="keywords">transporte,automovil,camion,auto,parte,refaccion,carroceria,vehiculo</field>
+        </record>
+        <record id="denue_sector_331" model="crm.denue.sector">
+            <field name="code">331</field>
+            <field name="name">Fabricación de muebles, colchones y persianas</field>
+            <field name="sector_code">33</field>
+            <field name="sector_name">Industrias manufactureras</field>
+            <field name="description">Producción de muebles para hogar y oficina, colchones, persianas</field>
+            <field name="keywords">mueble,colchon,persiana,carpinteria,decoracion,sofa,sillon</field>
+        </record>
+        <record id="denue_sector_332" model="crm.denue.sector">
+            <field name="code">332</field>
+            <field name="name">Otras industrias manufactureras</field>
+            <field name="sector_code">33</field>
+            <field name="sector_name">Industrias manufactureras</field>
+            <field name="description">Fabricación de joyería, instrumentos musicales, artículos deportivos, juguetes</field>
+            <field name="keywords">fabricacion,manufactura,joyeria,instrumento medico,deportivo,juguete,acero inoxidable</field>
+        </record>
+
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+        <!-- SECTOR 43: COMERCIO AL POR MAYOR                                -->
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+
+        <record id="denue_sector_431" model="crm.denue.sector">
+            <field name="code">431</field>
+            <field name="name">Comercio al por mayor de materias primas agrícolas y ganaderas</field>
+            <field name="sector_code">43</field>
+            <field name="sector_name">Comercio al por mayor</field>
+            <field name="description">Venta al mayoreo de granos, semillas, fertilizantes, forrajes y ganado</field>
+            <field name="keywords">mayorista,agricola,ganadera,materia prima,cereal,grano,fertilizante</field>
+        </record>
+        <record id="denue_sector_432" model="crm.denue.sector">
+            <field name="code">432</field>
+            <field name="name">Comercio al por mayor de mercancías diversas</field>
+            <field name="sector_code">43</field>
+            <field name="sector_name">Comercio al por mayor</field>
+            <field name="description">Distribución de productos variados: electrónica, ropa, alimentos no perecederos</field>
+            <field name="keywords">mayorista,mercancias,distribuidor,almacen,wholesale</field>
+        </record>
+        <record id="denue_sector_433" model="crm.denue.sector">
+            <field name="code">433</field>
+            <field name="name">Comercio al por mayor de alimentos y bebidas</field>
+            <field name="sector_code">43</field>
+            <field name="sector_name">Comercio al por mayor</field>
+            <field name="description">Distribución de abarrotes, bebidas, lácteos y productos alimenticios</field>
+            <field name="keywords">mayorista,alimentos,bebidas,abarrotes,distribucion,lacteo,carnes</field>
+        </record>
+        <record id="denue_sector_434" model="crm.denue.sector">
+            <field name="code">434</field>
+            <field name="name">Comercio al por mayor de artículos diversos</field>
+            <field name="sector_code">43</field>
+            <field name="sector_name">Comercio al por mayor</field>
+            <field name="description">Venta al mayoreo de ferretería, papelería, muebles y otros artículos</field>
+            <field name="keywords">mayorista,articulos varios,ferreteria,papeleria,muebles</field>
+        </record>
+
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+        <!-- SECTOR 46: COMERCIO AL POR MENOR                                -->
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+
+        <record id="denue_sector_461" model="crm.denue.sector">
+            <field name="code">461</field>
+            <field name="name">Comercio al por menor en establecimientos no especializados</field>
+            <field name="sector_code">46</field>
+            <field name="sector_name">Comercio al por menor</field>
+            <field name="description">Supermercados, tiendas departamentales, minisupers, Walmart, Soriana</field>
+            <field name="keywords">supermercado,tienda,abarrotes,no especializado,departamental,walmart,soriana,chedraui</field>
+        </record>
+        <record id="denue_sector_462" model="crm.denue.sector">
+            <field name="code">462</field>
+            <field name="name">Comercio al por menor de alimentos, bebidas y tabaco</field>
+            <field name="sector_code">46</field>
+            <field name="sector_name">Comercio al por menor</field>
+            <field name="description">Vinaterías, licorerías, abarrotes especializados, tiendas de tabaco</field>
+            <field name="keywords">vinateria,licoreria,abarrotes,tabaco,cigarro,vino,cerveza</field>
+        </record>
+        <record id="denue_sector_463" model="crm.denue.sector">
+            <field name="code">463</field>
+            <field name="name">Comercio al por menor de prendas de vestir y artículos de uso personal</field>
+            <field name="sector_code">46</field>
+            <field name="sector_name">Comercio al por menor</field>
+            <field name="description">Tiendas de ropa, calzado, accesorios y boutiques</field>
+            <field name="keywords">ropa,vestir,calzado,texto,moda,boutique,zapateria,tienda ropa</field>
+        </record>
+        <record id="denue_sector_464" model="crm.denue.sector">
+            <field name="code">464</field>
+            <field name="name">Comercio al por menor de artículos para el hogar</field>
+            <field name="sector_code">46</field>
+            <field name="sector_name">Comercio al por menor</field>
+            <field name="description">Tiendas de muebles, electrodomésticos, ferretería y decoración</field>
+            <field name="keywords">hogar,mueble,electrodomestico,ferreteria,decoracion,tienda muebles</field>
+        </record>
+        <record id="denue_sector_465" model="crm.denue.sector">
+            <field name="code">465</field>
+            <field name="name">Comercio al por menor de artículos de uso personal y efectos personales</field>
+            <field name="sector_code">46</field>
+            <field name="sector_name">Comercio al por menor</field>
+            <field name="description">Joyas, relojes, ópticas, farmacias, artículos religiosos</field>
+            <field name="keywords">joyeria,reloj,optica,farmacia,personal,religious,farmacia,drogueria</field>
+        </record>
+        <record id="denue_sector_466" model="crm.denue.sector">
+            <field name="code">466</field>
+            <field name="name">Comercio al por menor de vehículos de motor, partes y refacciones</field>
+            <field name="sector_code">46</field>
+            <field name="sector_name">Comercio al por menor</field>
+            <field name="description">Agencias automotrices, refaccionarias, llanteras, autopartes</field>
+            <field name="keywords">auto,vehiculo,refaccion,llanta,agencia,autoparte,seminuevo,usado</field>
+        </record>
+        <record id="denue_sector_467" model="crm.denue.sector">
+            <field name="code">467</field>
+            <field name="name">Comercio al por menor de combustibles, lubricantes y aditivos</field>
+            <field name="sector_code">46</field>
+            <field name="sector_name">Comercio al por menor</field>
+            <field name="description">Gasolineras, estaciones de servicio, tiendas de aceites y lubricantes</field>
+            <field name="keywords">gasolinera,combustible,lubricante,gas,estacion servicio,premium,magna</field>
+        </record>
+        <record id="denue_sector_468" model="crm.denue.sector">
+            <field name="code">468</field>
+            <field name="name">Comercio al por menor en puestos y mercados</field>
+            <field name="sector_code">46</field>
+            <field name="sector_name">Comercio al por menor</field>
+            <field name="description">Puestos de mercado, tianguis, centrales de abasto, puestos fijos</field>
+            <field name="keywords">mercado,puesto,ambulante,tianguis,central abasto,tiendita</field>
+        </record>
+        <record id="denue_sector_469" model="crm.denue.sector">
+            <field name="code">469</field>
+            <field name="name">Otros comercios al por menor</field>
+            <field name="sector_code">46</field>
+            <field name="sector_name">Comercio al por menor</field>
+            <field name="description">Comercio al por menor no clasificado en otra parte</field>
+            <field name="keywords">comercio menor,otro,especializado</field>
+        </record>
+
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+        <!-- SECTOR 48-49: TRANSPORTE Y ALMACENAJE                           -->
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+
+        <record id="denue_sector_481" model="crm.denue.sector">
+            <field name="code">481</field>
+            <field name="name">Transporte aéreo</field>
+            <field name="sector_code">48</field>
+            <field name="sector_name">Transporte y almacenaje</field>
+            <field name="description">Aerolíneas, aerotaxis, transporte de carga aérea, helicópteros</field>
+            <field name="keywords">aereo,avion,aerolinea,carga aerea,helicoptero,aeropuerto,vuelo</field>
+        </record>
+        <record id="denue_sector_482" model="crm.denue.sector">
+            <field name="code">482</field>
+            <field name="name">Transporte ferroviario</field>
+            <field name="sector_code">48</field>
+            <field name="sector_name">Transporte y almacenaje</field>
+            <field name="description">Transporte de pasajeros y carga por vía férrea</field>
+            <field name="keywords">ferroviario,tren,ferreo,via ferea,carga ferroviaria</field>
+        </record>
+        <record id="denue_sector_483" model="crm.denue.sector">
+            <field name="code">483</field>
+            <field name="name">Transporte marítimo y por vías navegables</field>
+            <field name="sector_code">48</field>
+            <field name="sector_name">Transporte y almacenaje</field>
+            <field name="description">Transporte naval, barcos, buques de carga y pasajeros</field>
+            <field name="keywords">maritimo,naviero,barco,buque,via navegable,puerto,nave</field>
+        </record>
+        <record id="denue_sector_484" model="crm.denue.sector">
+            <field name="code">484</field>
+            <field name="name">Transporte terrestre de pasajeros</field>
+            <field name="sector_code">48</field>
+            <field name="sector_name">Transporte y almacenaje</field>
+            <field name="description">Autobuses, taxis, Uber, transporte escolar, limusinas</field>
+            <field name="keywords">pasajeros,autobus,camioneta,taxi,colectivo,uber,transporte escolar</field>
+        </record>
+        <record id="denue_sector_485" model="crm.denue.sector">
+            <field name="code">485</field>
+            <field name="name">Transporte terrestre de carga</field>
+            <field name="sector_code">48</field>
+            <field name="sector_name">Transporte y almacenaje</field>
+            <field name="description">Fletes, logística, paquetería, transporte de mercancías por carretera</field>
+            <field name="keywords">carga,flete,camion,logistica,paqueteria,envio,transporte mercancia</field>
+        </record>
+        <record id="denue_sector_486" model="crm.denue.sector">
+            <field name="code">486</field>
+            <field name="name">Transporte por tuberías</field>
+            <field name="sector_code">48</field>
+            <field name="sector_name">Transporte y almacenaje</field>
+            <field name="description">Transporte de petróleo, gas y other fluidos por ductos</field>
+            <field name="keywords">tuberia,ducto,petroleo,gas,oleoducto,gasoducto</field>
+        </record>
+        <record id="denue_sector_487" model="crm.denue.sector">
+            <field name="code">487</field>
+            <field name="name">Servicios de apoyo al transporte</field>
+            <field name="sector_code">48</field>
+            <field name="sector_name">Transporte y almacenaje</field>
+            <field name="description">Operadores de terminales, agentes aduanales, estaciones de servicio</field>
+            <field name="keywords">apoyo,logistica,almacenaje,terminal,deposito,aduana,agente aduanal</field>
+        </record>
+        <record id="denue_sector_488" model="crm.denue.sector">
+            <field name="code">488</field>
+            <field name="name">Correos y mensajería</field>
+            <field name="sector_code">48</field>
+            <field name="sector_name">Transporte y almacenaje</field>
+            <field name="description">Servicios postales, paquetería express, DHL, FedEx, Estafeta</field>
+            <field name="keywords">correos,mensajeria,paqueteria,envio,entrega,dhl,fedex,estafeta,ups</field>
+        </record>
+        <record id="denue_sector_491" model="crm.denue.sector">
+            <field name="code">491</field>
+            <field name="name">Almacenamiento y depósito</field>
+            <field name="sector_code">49</field>
+            <field name="sector_name">Transporte y almacenaje</field>
+            <field name="description">Bodegas, centros de distribución, almacenes frigoríficos</field>
+            <field name="keywords">almacenamiento,deposito,bodega,logistica,frio,guardamuebles,centro distribucion</field>
+        </record>
+        <record id="denue_sector_492" model="crm.denue.sector">
+            <field name="code">492</field>
+            <field name="name">Servicios de transportación terrestre de pasajeros</field>
+            <field name="sector_code">49</field>
+            <field name="sector_name">Transporte y almacenaje</field>
+            <field name="description">Servicios de renta de automóviles, autobuses charters, transporte turístico</field>
+            <field name="keywords">renta automoviles,autobus charter,turistico,transporte turismo</field>
+        </record>
+        <record id="denue_sector_493" model="crm.denue.sector">
+            <field name="code">493</field>
+            <field name="name">Servicios de transportación de carga</field>
+            <field name="sector_code">49</field>
+            <field name="sector_name">Transporte y almacenaje</field>
+            <field name="description">Servicios de flete consolidado, Less Than Truckload (LTL)</field>
+            <field name="keywords">flete,consolidado,lTL,carga parcial,transporte especializado</field>
+        </record>
+
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+        <!-- SECTOR 51: INFORMACIÓN EN MEDIOS                                -->
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+
+        <record id="denue_sector_511" model="crm.denue.sector">
+            <field name="code">511</field>
+            <field name="name">Edición de libros, periódicos y otras publicaciones</field>
+            <field name="sector_code">51</field>
+            <field name="sector_name">Información en medios</field>
+            <field name="description">Editoriales, imprentas de libros, periódicos, revistas y publicaciones digitales</field>
+            <field name="keywords">edicion,libro,periodico,publicacion,revista,imprenta,editorial,digital</field>
+        </record>
+        <record id="denue_sector_512" model="crm.denue.sector">
+            <field name="code">512</field>
+            <field name="name">Industrias de cine, video, radio y televisión</field>
+            <field name="sector_code">51</field>
+            <field name="sector_name">Información en medios</field>
+            <field name="description">Productoras de cine, TV, radio, streaming, producción audiovisual</field>
+            <field name="keywords">cine,video,radio,television,produccion,transmision,streaming,audiovisual</field>
+        </record>
+        <record id="denue_sector_513" model="crm.denue.sector">
+            <field name="code">513</field>
+            <field name="name">Telecomunicaciones</field>
+            <field name="sector_code">51</field>
+            <field name="sector_name">Información en medios</field>
+            <field name="description">Telefonía fija y móvil, internet, cable, satellite, fibra óptica</field>
+            <field name="keywords">telecomunicaciones,telefonia,internet,celular,satelite,tecnologia,wifi,fibra optica,cable</field>
+        </record>
+        <record id="denue_sector_514" model="crm.denue.sector">
+            <field name="code">514</field>
+            <field name="name">Procesamiento de datos, hospedaje y servicios relacionados</field>
+            <field name="sector_code">51</field>
+            <field name="sector_name">Información en medios</field>
+            <field name="description">Data centers, hosting, cloud computing, servicios de TI, software as a service</field>
+            <field name="keywords">datos,procesamiento,hospedaje,hosting,nube,cloud,ti,data center,servidor</field>
+        </record>
+        <record id="denue_sector_515" model="crm.denue.sector">
+            <field name="code">515</field>
+            <field name="name">Otros servicios de información</field>
+            <field name="sector_code">51</field>
+            <field name="sector_name">Información en medios</field>
+            <field name="description">Agencias de noticias, archivos, bibliotecas, portales de información</field>
+            <field name="keywords">informacion,servicios,biblioteca,archivo,prensa,noticias,portal</field>
+        </record>
+
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+        <!-- SECTOR 52: SERVICIOS FINANCIEROS Y DE SEGUROS                   -->
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+
+        <record id="denue_sector_521" model="crm.denue.sector">
+            <field name="code">521</field>
+            <field name="name">Banca central, creditaria y monetaria</field>
+            <field name="sector_code">52</field>
+            <field name="sector_name">Servicios financieros y de seguros</field>
+            <field name="description">Bancos comerciales, cajas de ahorro, banca de desarrollo</field>
+            <field name="keywords">banco,credito,prestamo,inversion,financiera,sofom,cuenta,ahorro</field>
+        </record>
+        <record id="denue_sector_522" model="crm.denue.sector">
+            <field name="code">522</field>
+            <field name="name">Servicios de intermediación crediticia y monetaria</field>
+            <field name="sector_code">52</field>
+            <field name="sector_name">Servicios financieros y de seguros</field>
+            <field name="description">Casas de cambio, brokers financieros, fintech, crowdfunding</field>
+            <field name="keywords">intermediacion,casa cambio,broker,fintech,crowdfunding,prestamo personal</field>
+        </record>
+        <record id="denue_sector_523" model="crm.denue.sector">
+            <field name="code">523</field>
+            <field name="name">Servicios de seguros y fondos de pensiones</field>
+            <field name="sector_code">52</field>
+            <field name="sector_name">Servicios financieros y de seguros</field>
+            <field name="description">Aseguradoras, planes de pensiones, fondos de retiro</field>
+            <field name="keywords">seguros,fianza,aseguradora,broker,riesgo,pension,retiro,vida,auto</field>
+        </record>
+        <record id="denue_sector_524" model="crm.denue.sector">
+            <field name="code">524</field>
+            <field name="name">Servicios auxiliares de la intermediación financiera</field>
+            <field name="sector_code">52</field>
+            <field name="sector_name">Servicios financieros y de seguros</field>
+            <field name="description">Bolsa de valores, intermediarios bursátiles, fondos de inversión</field>
+            <field name="keywords">bolsa,valores,bursatil,fondo inversion,inversion,acciones,bonos</field>
+        </record>
+        <record id="denue_sector_525" model="crm.denue.sector">
+            <field name="code">525</field>
+            <field name="name">Fideicomisos, fondos de pensiones y seguros (otras actividades)</field>
+            <field name="sector_code">52</field>
+            <field name="sector_name">Servicios financieros y de seguros</field>
+            <field name="description">Administración de fideicomisos, fondos de ahorro y planes de retiro</field>
+            <field name="keywords">fideicomiso,fondo pension,retiro,ahorro,plan retiro,afinidora</field>
+        </record>
+
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+        <!-- SECTOR 53: SERVICIOS INMOBILIARIOS Y DE ALQUILER                -->
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+
+        <record id="denue_sector_531" model="crm.denue.sector">
+            <field name="code">531</field>
+            <field name="name">Servicios inmobiliarios</field>
+            <field name="sector_code">53</field>
+            <field name="sector_name">Servicios inmobiliarios y de alquiler</field>
+            <field name="description">Agencias inmobiliarias, compra-venta de terrenos, administración de propiedades</field>
+            <field name="keywords">inmobiliaria,bienes raices,renta,venta,terreno,propiedad,agencia,construccion</field>
+        </record>
+        <record id="denue_sector_532" model="crm.denue.sector">
+            <field name="code">532</field>
+            <field name="name">Alquiler de bienes muebles e intangibles</field>
+            <field name="sector_code">53</field>
+            <field name="sector_name">Servicios inmobiliarios y de alquiler</field>
+            <field name="description">Rentas de maquinaria, equipo, mobiliario, vehículos y software</field>
+            <field name="keywords">alquiler,renta,muebles,intangibles,maquinaria,equipo,vehiculo,software</field>
+        </record>
+
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+        <!-- SECTOR 54: SERVICIOS PROFESIONALES, CIENTÍFICOS Y TÉCNICOS      -->
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+
+        <record id="denue_sector_541" model="crm.denue.sector">
+            <field name="code">541</field>
+            <field name="name">Servicios profesionales, científicos y técnicos</field>
+            <field name="sector_code">54</field>
+            <field name="sector_name">Servicios profesionales, científicos y técnicos</field>
+            <field name="description">Consultoría, ingeniería, legal, contable, diseño, arquitectura, software, publicidad</field>
+            <field name="keywords">profesional,cientifico,tecnico,consultoria,ingenieria,legal,contable,diseño,tecnologia,software,arquitecto,publicidad</field>
+        </record>
+        <record id="denue_sector_542" model="crm.denue.sector">
+            <field name="code">542</field>
+            <field name="name">Servicios de protección y seguridad</field>
+            <field name="sector_code">54</field>
+            <field name="sector_name">Servicios profesionales, científicos y técnicos</field>
+            <field name="description">Empresas de seguridad privada, vigilancia, custodia, sistemas de alarma</field>
+            <field name="keywords">seguridad,vigilancia,custodia,alarma,privado,guardia,proteccion</field>
+        </record>
+
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+        <!-- SECTOR 55: SERVICIOS CORPORATIVOS Y DE APOYO                    -->
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+
+        <record id="denue_sector_551" model="crm.denue.sector">
+            <field name="code">551</field>
+            <field name="name">Corporativos</field>
+            <field name="sector_code">55</field>
+            <field name="sector_name">Servicios corporativos y de apoyo</field>
+            <field name="description">Oficinas centrales de empresas, matrices, subordinadas y afiliadas</field>
+            <field name="keywords">corporativo,oficina central,matriz,subsidiaria,holding,empresa</field>
+        </record>
+        <record id="denue_sector_552" model="crm.denue.sector">
+            <field name="code">552</field>
+            <field name="name">Servicios de apoyo a los negocios</field>
+            <field name="sector_code">55</field>
+            <field name="sector_name">Servicios corporativos y de apoyo</field>
+            <field name="description">Call centers, reclutamiento, limpieza, mantenimiento, administración de edificios</field>
+            <field name="keywords">apoyo,negocios,call center,reclutamiento,seguridad,limpieza,mantenimiento,outsourcing</field>
+        </record>
+
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+        <!-- SECTOR 56: SERVICIOS EDUCATIVOS                                 -->
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+
+        <record id="denue_sector_561" model="crm.denue.sector">
+            <field name="code">561</field>
+            <field name="name">Servicios educativos</field>
+            <field name="sector_code">56</field>
+            <field name="sector_name">Servicios educativos</field>
+            <field name="description">Escuelas, universidades, academias, capacitación, entrenamiento, kinder</field>
+            <field name="keywords">educacion,escuela,colegio,universidad,capacitacion,curso,formacion,kinder,academia,training</field>
+        </record>
+
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+        <!-- SECTOR 61-62: SERVICIOS DE SALUD Y ASISTENCIA SOCIAL            -->
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+
+        <record id="denue_sector_611" model="crm.denue.sector">
+            <field name="code">611</field>
+            <field name="name">Servicios de salud</field>
+            <field name="sector_code">61</field>
+            <field name="sector_name">Servicios de salud y asistencia social</field>
+            <field name="description">Hospitales, clínicas, consultorios, laboratorios, farmacias, terapias</field>
+            <field name="keywords">salud,hospital,clinica,medico,doctor,consulta,labatorio,rayos,urgencias,dental,farmacia</field>
+        </record>
+        <record id="denue_sector_612" model="crm.denue.sector">
+            <field name="code">612</field>
+            <field name="name">Servicios de asistencia social</field>
+            <field name="sector_code">61</field>
+            <field name="sector_name">Servicios de salud y asistencia social</field>
+            <field name="description">Asilos, guarderías, centros de día, apoyo a personas con discapacidad</field>
+            <field name="keywords">asistencia social,asilo,guarderia,cuidado,ancianos,discapacidad,proteccion,centro dia</field>
+        </record>
+
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+        <!-- SECTOR 62: SERVICIOS DE ESPARCIMIENTO, CULTURALES Y DEPORTIVOS  -->
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+
+        <record id="denue_sector_621" model="crm.denue.sector">
+            <field name="code">621</field>
+            <field name="name">Servicios de esparcimiento, culturales y deportivos</field>
+            <field name="sector_code">62</field>
+            <field name="sector_name">Servicios de esparcimiento, culturales y deportivos</field>
+            <field name="description">Cines, teatros, museos, gimnasios, parques, canchas, eventos deportivos</field>
+            <field name="keywords">esparcimiento,cultural,deportivo,recreacion,cine,teatro,museo,gimnasio,parque,salones,fiestas</field>
+        </record>
+
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+        <!-- SECTOR 71-72: SERVICIOS DE ALOJAMIENTO Y ALIMENTOS             -->
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+
+        <record id="denue_sector_711" model="crm.denue.sector">
+            <field name="code">711</field>
+            <field name="name">Servicios de alojamiento temporal</field>
+            <field name="sector_code">71</field>
+            <field name="sector_name">Servicios de alojamiento temporal y de preparación de alimentos y bebidas</field>
+            <field name="description">Hoteles, moteles, hostales, campings, airbnb, hospedaje</field>
+            <field name="keywords">alojamiento,hotel,motel,hostal,hospedaje,airbnb,cama,desayuno,camping,posada</field>
+        </record>
+        <record id="denue_sector_712" model="crm.denue.sector">
+            <field name="code">712</field>
+            <field name="name">Servicios de preparación de alimentos y bebidas</field>
+            <field name="sector_code">71</field>
+            <field name="sector_name">Servicios de alojamiento temporal y de preparación de alimentos y bebidas</field>
+            <field name="description">Restaurantes, cafeterías, bares, taquerías, pizzerías, cocinas económicas</field>
+            <field name="keywords">restaurante,comida,bebidas,cafeteria,taqueria,bar,catering,banquete,comida rapida,pizza,tacos,cocteleria</field>
+        </record>
+
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+        <!-- SECTOR 72: OTROS SERVICIOS                                      -->
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+
+        <record id="denue_sector_721" model="crm.denue.sector">
+            <field name="code">721</field>
+            <field name="name">Servicios de reparación y mantenimiento</field>
+            <field name="sector_code">72</field>
+            <field name="sector_name">Otros servicios</field>
+            <field name="description">Talleres mecánicos, electricistas, plomeros,lavado de autos</field>
+            <field name="keywords">reparacion,mantenimiento,mecanico,electrico,plomeria,tecnico,servicio tecnico,lavado auto,taller</field>
+        </record>
+        <record id="denue_sector_722" model="crm.denue.sector">
+            <field name="code">722</field>
+            <field name="name">Servicios personales y de lavandería</field>
+            <field name="sector_code">72</field>
+            <field name="sector_name">Otros servicios</field>
+            <field name="description">Lavanderías, tintorerías, peluquerías, estéticas, spas, barberías</field>
+            <field name="keywords">personal,lavanderia,tintoreria,belleza,estetica,spa,peluqueria,barberia,cortes uñas</field>
+        </record>
+        <record id="denue_sector_723" model="crm.denue.sector">
+            <field name="code">723</field>
+            <field name="name">Asociaciones religiosas, cívicas, profesionales y similares</field>
+            <field name="sector_code">72</field>
+            <field name="sector_name">Otros servicios</field>
+            <field name="description">Iglesias, sindicatos, cámaras empresariales, ONGs, asociaciones civiles</field>
+            <field name="keywords">asociacion,religiosa,civica,profesional,sindicato,camara,ong,iglesia,sindicato</field>
+        </record>
+        <record id="denue_sector_724" model="crm.denue.sector">
+            <field name="code">724</field>
+            <field name="name">Servicios privados de hogares</field>
+            <field name="sector_code">72</field>
+            <field name="sector_name">Otros servicios</field>
+            <field name="description">Servicio doméstico, niñeras, cuidadores, empleadas del hogar</field>
+            <field name="keywords">hogares,servicio domestico,empleada,niñera,cuidador,domestico,nana</field>
+        </record>
+
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+        <!-- SECTOR 81: ACTIVIDADES LEGISLATIVAS, GUBERNAMENTALES,           -->
+        <!-- DE IMPARTICIÓN DE JUSTICIA Y DE ORGANISMOS INTERNACIONALES      -->
+        <!-- ═══════════════════════════════════════════════════════════════════ -->
+
+        <record id="denue_sector_811" model="crm.denue.sector">
+            <field name="code">811</field>
+            <field name="name">Actividades legislativas, gubernamentales, de impartición de justicia y de organismos internacionales</field>
+            <field name="sector_code">81</field>
+            <field name="sector_name">Actividades legislativas, gubernamentales, de impartición de justicia y de organismos internacionales</field>
+            <field name="description">Gobierno federal, estatal y municipal, tribunales, organismos públicos</field>
+            <field name="keywords">gobierno,legislativo,justicia,tribunal,organismo internacional,publico,administracion,municipio,estado,federal</field>
+        </record>
+
+    </data>
+</odoo>

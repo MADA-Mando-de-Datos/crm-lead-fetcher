@@ -1,0 +1,11 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_crm_denue_sector_user,crm.denue.sector.user,model_crm_denue_sector,base.group_user,1,0,0,0
+access_crm_denue_sector_manager,crm.denue.sector.manager,model_crm_denue_sector,base.group_system,1,1,1,1
+access_crm_denue_entidad_user,crm.denue.entidad.user,model_crm_denue_entidad,base.group_user,1,0,0,0
+access_crm_denue_entidad_manager,crm.denue.entidad.manager,model_crm_denue_entidad,base.group_system,1,1,1,1
+access_crm_lead_request_user,crm.lead.request.user,model_crm_lead_request,base.group_user,1,1,1,1
+access_crm_lead_request_manager,crm.lead.request.manager,model_crm_lead_request,base.group_system,1,1,1,1
+access_crm_yelp_category_user,crm.yelp.category.user,model_crm_yelp_category,base.group_user,1,0,0,0
+access_crm_yelp_category_manager,crm.yelp.category.manager,model_crm_yelp_category,base.group_system,1,1,1,1
+access_crm_google_place_type_user,crm.google.place.type.user,model_crm_google_place_type,base.group_user,1,0,0,0
+access_crm_google_place_type_manager,crm.google.place.type.manager,model_crm_google_place_type,base.group_system,1,1,1,1

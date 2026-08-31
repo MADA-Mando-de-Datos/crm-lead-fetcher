@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+
+# Odoo filestore / runtime (no debe estar en el repo)
+.idea/
+.vscode/
+*.log
+
+# Backups / temp
+*.bak
+*.tmp
