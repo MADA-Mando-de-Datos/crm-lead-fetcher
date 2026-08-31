@@ -1,5 +1,5 @@
 {
-    'name': 'Lead Mining CRM (DENUE + Yelp + Google)',
+    'name': 'Lead Mining CRM',
     'version': '18.0.5.0.0',
     'category': 'Sales/CRM',
     'summary': 'Generate CRM leads from multiple sources: DENUE (INEGI), Yelp and Google Places',
@@ -25,7 +25,6 @@ Features:
     """,
     'license': 'LGPL-3',
     'author': 'MADA',
-    'website': 'https://github.com/',
     'images': ['static/description/main_screenshot.png'],
     'price': 9.0,
     'currency': 'EUR',
