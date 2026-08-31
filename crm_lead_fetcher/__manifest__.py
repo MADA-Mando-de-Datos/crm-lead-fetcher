@@ -28,7 +28,7 @@ Features:
     'images': ['static/description/main_screenshot.png'],
     'price': 9.0,
     'currency': 'EUR',
-    'support': 'you@example.com',
+    'support': 'hola@madamexico.me',
     'depends': ['base', 'crm'],
     'data': [
         'security/ir.model.access.csv',
