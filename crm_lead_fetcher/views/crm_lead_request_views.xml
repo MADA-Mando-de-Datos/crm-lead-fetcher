@@ -55,7 +55,9 @@
                                         required="source_key == 'denue'"
                                         help="Estados donde se realizará la búsqueda"/>
                                     <field name="sector_ids" widget="many2many_tags" options="{'no_create': True, 'no_open': True}"
-                                        required="search_type == 'by_state'"/>
+                                        required="source_key == 'denue' and search_type == 'by_state'"
+                                        invisible="source_key != 'denue' or search_type != 'by_state'"
+                                        help="Sectores SCIAN (obligatorio cuando el tipo es 'Todo el estado')"/>
                                     <field name="municipio" placeholder="Ej: San Luis Potosí, Soledad..."/>
                                 </group>
                                 <group string="Parámetros de búsqueda">
@@ -76,12 +78,18 @@
                                 </group>
                             </group>
                             <group string="Filtros de tamaño (estrato)">
-                                <field name="estrato_min" string="Estrato mínimo (1–7)"/>
-                                <field name="estrato_max" string="Estrato máximo (1–7)"/>
+                                <group>
+                                    <field name="estrato_min" string="Estrato mínimo (1–7)"/>
+                                    <field name="estrato_max" string="Estrato máximo (1–7)"/>
+                                </group>
+                                <div class="text-muted" style="font-size:0.85em; padding: 4px 0;">
+                                    1 = 0‑5 personas &#160;&#183;&#160; 2 = 6‑10 &#160;&#183;&#160; 3 = 11‑30 &#160;&#183;&#160;
+                                    4 = 31‑50 &#160;&#183;&#160; 5 = 51‑100 &#160;&#183;&#160; 6 = 101‑250 &#160;&#183;&#160; 7 = 251+
+                                </div>
                             </group>
-
                         </page>
                     </notebook>
+
 
                     <!-- ===================== SECCIÓN YELP ===================== -->
                     <notebook invisible="source_key != 'yelp'">
