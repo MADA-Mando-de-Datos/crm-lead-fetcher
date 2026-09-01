@@ -179,17 +179,21 @@ class CrmLeadRequest(models.Model):
 
     @api.onchange('estrato_min')
     def _onchange_estrato_min(self):
-        if self.estrato_min <= 0:
-            self.estrato_min = 1
-        elif self.estrato_min > self.estrato_max:
-            self.estrato_min = self.estrato_max
+        if self.estrato_min:
+            val = int(self.estrato_min)
+            if val <= 0:
+                self.estrato_min = '1'
+            elif self.estrato_max and val > int(self.estrato_max):
+                self.estrato_min = self.estrato_max
 
     @api.onchange('estrato_max')
     def _onchange_estrato_max(self):
-        if self.estrato_max < self.estrato_min:
-            self.estrato_max = self.estrato_min
-        elif self.estrato_max > 7:
-            self.estrato_max = 7
+        if self.estrato_max:
+            val = int(self.estrato_max)
+            if self.estrato_min and val < int(self.estrato_min):
+                self.estrato_max = self.estrato_min
+            elif val > 7:
+                self.estrato_max = '7'
 
     def action_draft(self):
         self.ensure_one()
