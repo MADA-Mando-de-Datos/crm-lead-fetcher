@@ -34,7 +34,7 @@ class LeadSourceDenue(models.AbstractModel):
         st = wizard.search_type
         if st == 'by_state' and not wizard.sector_ids:
             raise UserError(_('En búsqueda "Todo el estado" debe seleccionar al menos un sector SCIAN.'))
-        if st in ('by_activity_state', 'by_geo') and not (wizard.actividad or '').strip():
+        if st == 'by_activity_state' and not (wizard.actividad or '').strip():
             raise UserError(_('Capture la actividad o palabra clave a buscar.'))
         if st == 'by_name_state' and not (wizard.nombre_busqueda or '').strip():
             raise UserError(_('Capture el nombre del establecimiento a buscar.'))
@@ -113,14 +113,6 @@ class LeadSourceDenue(models.AbstractModel):
             if not nombre:
                 return []
             return [api.search_by_name_and_state(nombre, entidad, max_records)]
-        if search_type == 'by_geo':
-            lat = filters.get('lat')
-            lon = filters.get('lon')
-            radio = filters.get('radio_km', 5) * 1000
-            actividad = filters.get('actividad', '')
-            if not (lat and lon and actividad):
-                return []
-            return [api.search_by_geo(actividad, lat, lon, radio, max_records)]
         return []
 
     @api.model
@@ -224,25 +216,6 @@ class LeadSourceDenue(models.AbstractModel):
         if estrato_max:
             emax = int(estrato_max)
             filtered = [r for r in filtered if int(r.get('estrato') or 0) <= emax]
-
-        search_type = getattr(wizard, 'search_type', None)
-        if search_type == 'by_geo':
-            lat = getattr(wizard, 'latitud', None)
-            lon = getattr(wizard, 'longitud', None)
-            if lat is not None and lon is not None:
-                try:
-                    lat0, lon0 = float(lat), float(lon)
-                except (TypeError, ValueError):
-                    lat0 = lon0 = None
-                if lat0 is not None:
-                    def _dist(r):
-                        try:
-                            rlat, rlon = float(r.get('Latitud')), float(r.get('Longitud'))
-                        except (TypeError, ValueError):
-                            return float('inf')
-                        # distancia euclidiana simple en grados (suficiente para ordenar)
-                        return ((rlat - lat0) ** 2 + (rlon - lon0) ** 2) ** 0.5
-                    filtered.sort(key=_dist)
 
         return filtered
 

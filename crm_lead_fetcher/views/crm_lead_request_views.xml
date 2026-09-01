@@ -62,19 +62,11 @@
                                 </group>
                                 <group string="Parámetros de búsqueda">
                                     <field name="actividad"
-                                        invisible="search_type not in ('by_activity_state', 'by_geo')"
+                                        invisible="search_type != 'by_activity_state'"
                                         placeholder="Ej: restaurante, ferretería, dentista"/>
                                     <field name="nombre_busqueda"
                                         invisible="search_type != 'by_name_state'"
                                         placeholder="Nombre comercial o razón social"/>
-                                    <div invisible="search_type != 'by_geo'" class="o_row">
-                                        <label for="latitud" string="Ubicación (lat / lon)"/>
-                                        <field name="latitud" nolabel="1"/>
-                                        <field name="longitud" nolabel="1"/>
-                                    </div>
-                                    <field name="distancia_metros"
-                                        invisible="search_type != 'by_geo'"
-                                        placeholder="Máximo 5,000 m"/>
                                 </group>
                             </group>
                             <group string="Filtros de tamaño (estrato)">

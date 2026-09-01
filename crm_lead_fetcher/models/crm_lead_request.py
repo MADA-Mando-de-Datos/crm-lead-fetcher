@@ -85,7 +85,6 @@ class CrmLeadRequest(models.Model):
         ('by_state', 'Todo el estado (por sectores)'),
         ('by_activity_state', 'Por actividad / palabra clave'),
         ('by_name_state', 'Por nombre del establecimiento'),
-        ('by_geo', 'Geográfica (actividad + radio)'),
     ], string='Tipo de búsqueda DENUE', required=True, default='by_state')
 
     # --- Campos YELP ---
