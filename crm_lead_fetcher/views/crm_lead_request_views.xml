@@ -76,19 +76,10 @@
                                 </group>
                             </group>
                             <group string="Filtros de tamaño (estrato)">
-                                <div class="o_row">
-                                    <label for="estrato_min" string="Rango de estrato"/>
-                                    <field name="estrato_min"/>
-                                    <field name="estrato_min_label" readonly="1" invisible="not estrato_min" class="text-muted"/>
-                                    <span> a </span>
-                                    <field name="estrato_max"/>
-                                    <field name="estrato_max_label" readonly="1" invisible="not estrato_max" class="text-muted"/>
-                                </div>
-                                <div class="text-muted" style="font-size:0.85em;">
-                                    Estrato = tamaño según personal ocupado:
-                                    1=0-5 · 2=6-10 · 3=11-30 · 4=31-50 · 5=51-100 · 6=101-250 · 7=251+
-                                </div>
+                                <field name="estrato_min" string="Estrato mínimo (1–7)"/>
+                                <field name="estrato_max" string="Estrato máximo (1–7)"/>
                             </group>
+
                         </page>
                     </notebook>
 

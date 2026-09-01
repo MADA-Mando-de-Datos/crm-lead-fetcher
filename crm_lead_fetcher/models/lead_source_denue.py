@@ -219,9 +219,11 @@ class LeadSourceDenue(models.AbstractModel):
         estrato_min = getattr(wizard, 'estrato_min', None)
         estrato_max = getattr(wizard, 'estrato_max', None)
         if estrato_min:
-            filtered = [r for r in filtered if (r.get('estrato') or 0) >= estrato_min]
+            emin = int(estrato_min)
+            filtered = [r for r in filtered if int(r.get('estrato') or 0) >= emin]
         if estrato_max:
-            filtered = [r for r in filtered if (r.get('estrato') or 0) <= estrato_max]
+            emax = int(estrato_max)
+            filtered = [r for r in filtered if int(r.get('estrato') or 0) <= emax]
 
         search_type = getattr(wizard, 'search_type', None)
         if search_type == 'by_geo':

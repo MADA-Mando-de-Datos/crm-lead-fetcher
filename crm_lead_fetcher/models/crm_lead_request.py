@@ -67,8 +67,12 @@ class CrmLeadRequest(models.Model):
                                    help='Estados donde buscar (códigos INEGI)')
     sector_ids = fields.Many2many('crm.denue.sector', string='Sectores SCIAN',
                                   help='Filtro por sectores económicos')
-    estrato_min = fields.Integer(string='Estrato mínimo', default=2)
-    estrato_max = fields.Integer(string='Estrato máximo', default=7)
+    estrato_min = fields.Selection(
+        selection=[(str(i), ESTRATO_LABELS[i]) for i in range(1, 8)],
+        string='Estrato mínimo', default='2')
+    estrato_max = fields.Selection(
+        selection=[(str(i), ESTRATO_LABELS[i]) for i in range(1, 8)],
+        string='Estrato máximo', default='7')
     estrato_min_label = fields.Char(compute='_compute_estrato_labels', string='Rango del estrato mínimo')
     estrato_max_label = fields.Char(compute='_compute_estrato_labels', string='Rango del estrato máximo')
     municipio = fields.Char(string='Municipio / Localidad')
