@@ -32,33 +32,91 @@ class Lead(models.Model):
 
     def action_enrich_email(self):
         """Dispara el proceso de enriquecimiento de email para este lead.
-        Utiliza el modelo *lead.email.enricher* que busca en la página web
-        (y rutas de contacto comunes) y asigna el primer email hallado.
+        Si no tiene sitio web, intenta descubrirlo orgánicamente primero.
         """
         self.ensure_one()
-        if not self.website:
-            raise UserError(_('El lead no tiene sitio web para intentar el enriquecimiento.'))
         enricher = self.env['lead.email.enricher']
+
+        # Si no tiene website o la web es solo la ficha de Yelp/directorio, intentar descubrir la web real
+        website_discovered = False
+        is_directory_link = bool(self.website and any(d in self.website.lower() for d in enricher.DISCOVERY_EXCLUDE_DOMAINS))
+        if (not self.website or is_directory_link) and self.name:
+            location = self.city or (self.state_id.name if self.state_id else '')
+            discovered_url = enricher.discover_website_by_query(self.name, location)
+            if discovered_url:
+                self.website = discovered_url
+                website_discovered = True
+
+        if not self.website:
+            raise UserError(_('El lead no tiene sitio web y no se pudo descubrir automáticamente.'))
+
         email = enricher.enrich_url(self.website)
         if email:
             self.email_from = email
+            msg = _('Se estableció el email: %s', email)
+            if website_discovered:
+                msg = _('Se descubrió la web (%s) y se estableció el email: %s', self.website, email)
             return {
                 'type': 'ir.actions.client',
                 'tag': 'display_notification',
                 'params': {
                     'title': _('Enriquecimiento completado'),
-                    'message': _('Se estableció el email: %s', email),
+                    'message': msg,
                     'type': 'success',
                 },
             }
         else:
+            msg = _('No se encontró un email en la web del lead.')
+            if website_discovered:
+                msg = _('Se descubrió la web (%s), pero no se encontró un email de contacto.', self.website)
             return {
                 'type': 'ir.actions.client',
                 'tag': 'display_notification',
                 'params': {
-                    'title': _('Sin resultados'),
-                    'message': _('No se encontró un email en la web del lead.'),
+                    'title': _('Sin resultados de email'),
+                    'message': msg,
                     'type': 'warning',
                 },
             }
+
+    def action_enrich_email_batch(self):
+        """Procesa el enriquecimiento de email y descubrimiento web en lote para los leads seleccionados."""
+        enricher = self.env['lead.email.enricher']
+        enriched_count = 0
+        discovered_web_count = 0
+
+        for lead in self:
+            # 1. Descubrir web si no tiene o si solo apunta a un directorio/Yelp
+            is_dir_link = bool(lead.website and any(d in lead.website.lower() for d in enricher.DISCOVERY_EXCLUDE_DOMAINS))
+            if (not lead.website or is_dir_link) and lead.name:
+                location = lead.city or (lead.state_id.name if lead.state_id else '')
+                discovered_url = enricher.discover_website_by_query(lead.name, location)
+                if discovered_url:
+                    lead.website = discovered_url
+                    discovered_web_count += 1
+
+            # 2. Si tiene web y no tiene email (o para actualizar), intentar enriquecer
+            if lead.website and not lead.email_from and not any(d in lead.website.lower() for d in enricher.DISCOVERY_EXCLUDE_DOMAINS):
+                found_email = enricher.enrich_url(lead.website)
+                if found_email:
+                    lead.email_from = found_email
+                    enriched_count += 1
+
+        title = _('Enriquecimiento en lote finalizado')
+        msg = _(
+            'Proceso completado para %d lead(s): %d email(s) asignado(s), %d sitio(s) web descubierto(s).',
+            len(self),
+            enriched_count,
+            discovered_web_count,
+        )
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': title,
+                'message': msg,
+                'type': 'success' if (enriched_count > 0 or discovered_web_count > 0) else 'info',
+            },
+        }
+
 

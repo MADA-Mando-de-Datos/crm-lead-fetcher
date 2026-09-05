@@ -1,3 +1,4 @@
+from markupsafe import Markup, escape
 from odoo import _, api, models
 from odoo.exceptions import UserError
 
@@ -119,20 +120,15 @@ class LeadSourceYelp(models.AbstractModel):
             'yelp_price': price_int or None,
             'latitude': coords.get('latitude'),
             'longitude': coords.get('longitude'),
-            'description': (
-                'Fuente: Yelp\n'
-                'Categorías: %s\n'
-                'Rating: %s (%s reseñas)\n'
-                'Precio: %s\n'
-                'Estado: %s\n'
-                'URL: %s'
+            'description': Markup(
+                '<p><strong>Giro:</strong> %s</p>'
+                '<p><strong>Reseñas:</strong> %s de 5 (%s opiniones)</p>'
+                '%s'
             ) % (
-                ', '.join(cat_names) or 'N/A',
-                record.get('rating', 'N/A'),
-                record.get('review_count', 0),
-                '$' * price_int or 'N/A',
-                'Abierto' if record.get('is_closed') is False else 'Cerrado',
-                record.get('url', 'N/A'),
+                escape(', '.join(cat_names) or 'General'),
+                escape(str(record.get('rating') or '0.0')),
+                escape(str(record.get('review_count') or 0)),
+                Markup('<p><a href="%s" target="_blank" rel="noopener noreferrer">Abrir ficha en Yelp</a></p>') % escape(record.get('url', '')) if record.get('url') else Markup(''),
             ),
         }
 

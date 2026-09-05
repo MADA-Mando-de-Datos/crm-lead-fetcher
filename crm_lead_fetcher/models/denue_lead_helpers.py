@@ -1,3 +1,4 @@
+from markupsafe import Markup, escape
 from odoo import api, models
 
 from .lead_source import ESTRATO_LABELS
@@ -53,6 +54,15 @@ class DenueLeadHelpers(models.AbstractModel):
                 record.get('Num_Interior') or '',
             ])
         ).strip()
+        actividad = (record.get('Clase_actividad') or record.get('Nombre_Act') or '').strip()
+        estrato = (record.get('Estrato') or '').strip()
+        desc_parts = []
+        if actividad:
+            desc_parts.append(f'<p><strong>Actividad:</strong> {escape(actividad)}</p>')
+        if estrato:
+            desc_parts.append(f'<p><strong>Tamaño:</strong> {escape(estrato)}</p>')
+        description = Markup(''.join(desc_parts))
+
         return {
             'type': lead_type,
             'team_id': team_id,
@@ -69,7 +79,7 @@ class DenueLeadHelpers(models.AbstractModel):
             'street2': record.get('Colonia') or '',
             'city': self._get_city(record),
             'zip': record.get('CP') or '',
-            'description': record.get('Clase_actividad') or '',
+            'description': description,
             'latitude': record.get('Latitud'),
             'longitude': record.get('Longitud'),
         }

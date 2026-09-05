@@ -1,3 +1,4 @@
+from markupsafe import Markup, escape
 from odoo import _, api, models
 from odoo.exceptions import UserError
 
@@ -146,21 +147,20 @@ class LeadSourceGoogle(models.AbstractModel):
         price_str = ('$' * price_level) if isinstance(price_level, int) and price_level > 0 else 'N/A'
         status_str = 'Operativo' if business_status == 'OPERATIONAL' else business_status
 
-        description = (
-            'Fuente: Google Places\n'
-            'Giro / Tipos: %s\n'
-            'Calificación: %s estrellas (%s opiniones)\n'
-            'Nivel de Precio: %s\n'
-            'Estado del Negocio: %s\n'
-            'Google Maps: %s'
-        ) % (
-            ', '.join([t.replace('_', ' ').capitalize() for t in types if t not in ('point_of_interest', 'establishment')][:4]) or 'General',
-            rating or 'N/A',
-            reviews,
-            price_str,
-            status_str,
-            maps_url or 'N/A',
-        )
+        types_clean = ', '.join([t.replace('_', ' ').capitalize() for t in types if t not in ('point_of_interest', 'establishment')][:4]) or 'General'
+        description_parts = [
+            f'<p><strong>Giro:</strong> {escape(types_clean)}</p>',
+        ]
+        if rating:
+            description_parts.append(
+                f'<p><strong>Reseñas:</strong> {escape(str(rating))} de 5 ({escape(str(reviews))} opiniones)</p>'
+            )
+        if maps_url:
+            description_parts.append(
+                f'<p><a href="{escape(maps_url)}" target="_blank" rel="noopener noreferrer">Abrir en Google Maps</a></p>'
+            )
+
+        description = Markup(''.join(description_parts))
 
         country_id = self.env.ref('base.mx').id if country_code == 'MX' else False
         state_id = self._resolve_state_id(state, country_id)
