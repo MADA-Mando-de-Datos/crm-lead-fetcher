@@ -10,22 +10,7 @@
             </xpath>
             <xpath expr="//field[@name='tag_ids']" position="after">
                 <field name="source_key" widget="badge" decoration-info="source_key == 'denue'" decoration-warning="source_key == 'yelp'" decoration-success="source_key == 'google'" invisible="not source_key"/>
-                <field name="external_id" readonly="1" invisible="not external_id"/>
                 <field name="lead_request_id" readonly="1" invisible="not lead_request_id"/>
-            </xpath>
-            <xpath expr="//field[@name='tag_ids']" position="after">
-                <group name="mining_data" string="Datos del minado" invisible="not external_id">
-                    <group>
-                        <field name="source_rating" readonly="1"/>
-                        <field name="source_reviews" readonly="1"/>
-                        <field name="source_price_level" readonly="1"/>
-                        <field name="yelp_price" readonly="1" invisible="source_key != 'yelp'"/>
-                    </group>
-                    <group>
-                        <field name="latitude" readonly="1"/>
-                        <field name="longitude" readonly="1"/>
-                    </group>
-                </group>
             </xpath>
         </field>
     </record>
@@ -37,11 +22,8 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='tag_ids']" position="after">
                 <field name="source_key" widget="badge" decoration-info="source_key == 'denue'" decoration-warning="source_key == 'yelp'" decoration-success="source_key == 'google'" optional="show"/>
-                <field name="external_id" optional="show"/>
+                <field name="external_id" optional="hide"/>
                 <field name="lead_request_id" optional="hide"/>
-                <field name="source_rating" string="Calificación" optional="hide"/>
-                <field name="source_reviews" string="Reseñas" optional="hide"/>
-                <field name="source_price_level" string="Precio" optional="hide"/>
             </xpath>
         </field>
     </record>
@@ -53,11 +35,8 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='tag_ids']" position="after">
                 <field name="source_key" widget="badge" decoration-info="source_key == 'denue'" decoration-warning="source_key == 'yelp'" decoration-success="source_key == 'google'" optional="show"/>
-                <field name="external_id" optional="show"/>
+                <field name="external_id" optional="hide"/>
                 <field name="lead_request_id" optional="hide"/>
-                <field name="source_rating" string="Calificación" optional="hide"/>
-                <field name="source_reviews" string="Reseñas" optional="hide"/>
-                <field name="source_price_level" string="Precio" optional="hide"/>
             </xpath>
         </field>
     </record>
@@ -71,9 +50,6 @@
                 <div t-if="record.source_key.raw_value" class="mt-1 d-flex gap-1 align-items-center flex-nowrap">
                     <span class="d-inline-block text-truncate" style="max-width:100%">
                         <field name="source_key" widget="badge" decoration-info="source_key == 'denue'" decoration-warning="source_key == 'yelp'" decoration-success="source_key == 'google'"/>
-                    </span>
-                    <span t-if="record.external_id.raw_value" class="text-muted small text-truncate" style="min-width:0">
-                        <field name="external_id"/>
                     </span>
                 </div>
             </xpath>
@@ -89,9 +65,6 @@
                 <div t-if="record.source_key.raw_value" class="mt-1 d-flex gap-1 align-items-center flex-nowrap">
                     <span class="d-inline-block text-truncate" style="max-width:100%">
                         <field name="source_key" widget="badge" decoration-info="source_key == 'denue'" decoration-warning="source_key == 'yelp'" decoration-success="source_key == 'google'"/>
-                    </span>
-                    <span t-if="record.external_id.raw_value" class="text-muted small text-truncate" style="min-width:0">
-                        <field name="external_id"/>
                     </span>
                 </div>
             </xpath>
