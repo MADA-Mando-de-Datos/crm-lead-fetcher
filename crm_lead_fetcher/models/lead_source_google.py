@@ -162,14 +162,17 @@ class LeadSourceGoogle(models.AbstractModel):
             maps_url or 'N/A',
         )
 
+        country_id = self.env.ref('base.mx').id if country_code == 'MX' else False
+        state_id = self._resolve_state_id(state, country_id)
+
         vals = {
             'name': name,
             'type': lead_type,
             'street': street or formatted_address or False,
             'city': city or False,
-            'state': state or False,
+            'state_id': state_id,
             'zip': zip_code or False,
-            'country_id': self.env.ref('base.mx').id if country_code == 'MX' else False,
+            'country_id': country_id,
             'email_from': False,
             'phone': phone,
             'mobile': mobile,
@@ -197,6 +200,17 @@ class LeadSourceGoogle(models.AbstractModel):
     @api.model
     def post_filter(self, records, wizard):
         return records
+
+    @api.model
+    def _resolve_state_id(self, state_raw, country_id=None):
+        if not state_raw:
+            return False
+        state_str = str(state_raw).strip()
+        domain = [('country_id', '=', country_id)] if country_id else []
+        state_rec = self.env['res.country.state'].search(domain + [('code', '=ilike', state_str)], limit=1)
+        if not state_rec:
+            state_rec = self.env['res.country.state'].search(domain + [('name', 'ilike', state_str)], limit=1)
+        return state_rec.id if state_rec else False
 
     @api.model
     def get_scan_cap(self):

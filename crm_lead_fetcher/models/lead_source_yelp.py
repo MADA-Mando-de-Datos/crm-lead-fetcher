@@ -97,6 +97,8 @@ class LeadSourceYelp(models.AbstractModel):
         loc = record.get('location', {})
         coords = record.get('coordinates', {}) or {}
         price_int = int(str(record.get('price', '0')).replace('$', '') or '0')
+        country_id = self.env.ref('base.mx').id if loc.get('country') == 'MX' else False
+        state_id = self._resolve_state_id(loc.get('state'), country_id)
         ext_id = self.get_external_id(record)
 
         vals = {
@@ -104,9 +106,9 @@ class LeadSourceYelp(models.AbstractModel):
             'type': lead_type,
             'street': (', '.join(loc.get('display_address', []))) or False,
             'city': loc.get('city', False),
-            'state': loc.get('state', False),
+            'state_id': state_id,
             'zip': loc.get('zip_code', False),
-            'country_id': self.env.ref('base.mx').id if loc.get('country') == 'MX' else False,
+            'country_id': country_id,
             'email_from': False,
             'phone': record.get('phone', False),
             'mobile': record.get('display_phone', False),
@@ -149,6 +151,17 @@ class LeadSourceYelp(models.AbstractModel):
     def post_filter(self, records, wizard):
         """Devuelve registros Yelp sin filtrado secundario innecesario."""
         return records
+
+    @api.model
+    def _resolve_state_id(self, state_raw, country_id=None):
+        if not state_raw:
+            return False
+        state_str = str(state_raw).strip()
+        domain = [('country_id', '=', country_id)] if country_id else []
+        state_rec = self.env['res.country.state'].search(domain + [('code', '=ilike', state_str)], limit=1)
+        if not state_rec:
+            state_rec = self.env['res.country.state'].search(domain + [('name', 'ilike', state_str)], limit=1)
+        return state_rec.id if state_rec else False
 
     @api.model
     def get_scan_cap(self):
