@@ -65,7 +65,7 @@ class TestLeadDeduplication(TransactionCase):
         ]
 
         count = request._create_leads_from_response(sample_records)
-        self.assertEqual(count, 1)
+        self.assertEqual(len(count), 1)
 
         created_lead = self.env['crm.lead'].search([('external_id', '=', '90001')])
         self.assertTrue(created_lead.exists())

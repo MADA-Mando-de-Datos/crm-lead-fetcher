@@ -4,107 +4,125 @@
         <field name="name">crm.lead.request.form</field>
         <field name="model">crm.lead.request</field>
         <field name="arch" type="xml">
-            <form string="Generar Leads">
-                    <header>
-                        <button name="action_submit" type="object" string="Generar Leads" class="btn-primary" icon="fa-magic" invisible="state == 'done'"/>
-                        <button name="action_test_connection" type="object" string="Comprobar conexión" class="btn-secondary" icon="fa-plug" invisible="state != 'draft'"
-                            help="Verifica que el servicio de la fuente seleccionada esté disponible antes de minar."/>
-                        <button name="action_duplicate_request" type="object" string="Nueva búsqueda con estos filtros" class="btn-secondary" icon="fa-copy" invisible="state != 'done'"/>
-                    </header>
+            <form string="Generación de Leads">
+                <header>
+                    <button name="action_submit" string="Generar Leads" type="object"
+                            class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_test_connection" string="Probar Conexión" type="object"
+                            class="btn-secondary" invisible="state != 'draft'"/>
+                    <button name="action_duplicate_request" string="Nueva Búsqueda" type="object"
+                            class="btn-secondary" invisible="state != 'done'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                </header>
                 <sheet>
-                    <div class="alert alert-info" role="status" invisible="state != 'draft'">
-                        <i class="fa fa-info-circle" title="Información"/> Seleccione la fuente de datos y complete los filtros para buscar leads.
+                    <div class="oe_button_box" name="button_box">
+                        <button name="crm_lead_fetcher.action_view_lead_leads" type="action"
+                                class="oe_stat_button" icon="fa-star"
+                                invisible="lead_type != 'lead' or lead_count == 0">
+                            <field name="lead_count" widget="statinfo" string="Leads"/>
+                        </button>
+                        <button name="crm_lead_fetcher.action_view_lead_opportunities" type="action"
+                                class="oe_stat_button" icon="fa-star"
+                                invisible="lead_type != 'opportunity' or lead_count == 0">
+                            <field name="lead_count" widget="statinfo" string="Oportunidades"/>
+                        </button>
                     </div>
+
                     <div class="alert alert-danger" role="alert" invisible="state != 'error'">
-                        <field name="error_msg" readonly="1"/>
-                        <div class="mt-2" invisible="error_type != 'connection'">
-                            <button name="action_submit" type="object" string="Reintentar" class="btn btn-sm btn-outline-danger" icon="fa-refresh"/>
-                        </div>
+                        <strong>Error:</strong> <field name="error_msg" readonly="1" class="d-inline"/>
                     </div>
-                    <div class="alert alert-success" role="status" invisible="state != 'done'">
-                        <i class="fa fa-check-circle" title="Completado"/> <b>¡Completado!</b> Se generaron <field name="lead_count" class="fw-bold"/> leads.
-                        <div class="mt-2">
-                            <button name="crm_lead_fetcher.action_view_lead_leads" type="action" class="btn btn-sm btn-outline-primary" invisible="lead_type != 'lead'">Ver Leads</button>
-                            <button name="crm_lead_fetcher.action_view_lead_opportunities" type="action" class="btn btn-sm btn-outline-primary" invisible="lead_type != 'opportunity'">Ver Oportunidades</button>
-                            <button name="action_export_csv" type="object" class="btn btn-sm btn-outline-success" icon="fa-download">Exportar CSV</button>
-                            <button name="action_duplicate_request" type="object" class="btn btn-sm btn-secondary" icon="fa-copy">Duplicar búsqueda</button>
-                        </div>
+
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1>
+                            <field name="name" placeholder="Ej: Restaurantes San Luis Potosí" readonly="state != 'draft'"/>
+                        </h1>
                     </div>
 
                     <group>
-                        <group string="Fuente y configuración">
+                        <group string="Configuración del Lead">
                             <field name="source_key" readonly="state != 'draft'"/>
-                            <field name="lead_type" readonly="state != 'draft'"/>
+                            <field name="lead_type" widget="radio" options="{'horizontal': true}" readonly="state != 'draft'"/>
                             <field name="lead_number" readonly="state != 'draft'"/>
+                        </group>
+                        <group string="Asignación Comercial">
                             <field name="team_id" options="{'no_create': True, 'no_open': True}"/>
                             <field name="user_id" options="{'no_create': True, 'no_open': True}"/>
                             <field name="tag_ids" widget="many2many_tags" options="{'no_create': True}"/>
-                            <field name="lead_count" readonly="1" invisible="state != 'done'"/>
                         </group>
                     </group>
 
-                    <!-- ===================== SECCIÓN DENUE ===================== -->
-                    <notebook invisible="source_key != 'denue'">
-                        <page string="Filtros DENUE" name="denue_filters">
+                    <notebook>
+                        <!-- Pestaña Búsqueda DENUE -->
+                        <page string="Criterios de Búsqueda" name="denue_criteria" invisible="source_key != 'denue'">
                             <group>
-                                <group string="Ubicación y sectores">
+                                <group string="Ubicación y Tipo">
                                     <field name="search_type" readonly="state != 'draft'"/>
                                     <field name="entidad_ids" widget="many2many_tags" options="{'no_create': True, 'no_open': True}"
-                                        domain="[('active', '=', True)]"
-                                        required="source_key == 'denue'"
-                                        help="Estados donde se realizará la búsqueda"/>
-                                    <field name="sector_ids" widget="many2many_tags" options="{'no_create': True, 'no_open': True}"
-                                        required="source_key == 'denue' and search_type == 'by_state'"
-                                        invisible="source_key != 'denue' or search_type != 'by_state'"
-                                        help="Sectores SCIAN (obligatorio cuando el tipo es 'Todo el estado')"/>
+                                           domain="[('active', '=', True)]"
+                                           required="source_key == 'denue'"
+                                           readonly="state != 'draft'"/>
                                 </group>
-                                <group string="Parámetros de búsqueda">
+                                <group string="Parámetros">
                                     <field name="actividad"
-                                        invisible="search_type != 'by_activity_state'"
-                                        placeholder="Ej: restaurante, ferretería, dentista"/>
+                                           invisible="search_type != 'by_activity_state'"
+                                           placeholder="Ej: restaurante, ferretería, dentista"
+                                           readonly="state != 'draft'"/>
+                                    <field name="sector_ids" widget="many2many_tags" options="{'no_create': True, 'no_open': True}"
+                                           invisible="search_type != 'by_state'"
+                                           required="source_key == 'denue' and search_type == 'by_state'"
+                                           readonly="state != 'draft'"/>
                                     <field name="nombre_busqueda"
-                                        invisible="search_type != 'by_name_state'"
-                                        placeholder="Nombre comercial o razón social"/>
+                                           invisible="search_type != 'by_name_state'"
+                                           placeholder="Ej: Oxxo, Walmart, Farmacias Guadalajara"
+                                           readonly="state != 'draft'"/>
                                 </group>
                             </group>
-                            <group string="Tamaño de empresa (Estrato)">
+                            <group string="Filtro por Tamaño de Negocio">
                                 <group>
-                                    <field name="estrato_min" string="Mínimo"/>
-                                    <field name="estrato_max" string="Máximo"/>
-                                </group>
-                                <div class="text-muted" style="font-size:0.85em; padding: 4px 0;">
-                                    1 = 0‑5 personas &#160;&#183;&#160; 2 = 6‑10 &#160;&#183;&#160; 3 = 11‑30 &#160;&#183;&#160;
-                                    4 = 31‑50 &#160;&#183;&#160; 5 = 51‑100 &#160;&#183;&#160; 6 = 101‑250 &#160;&#183;&#160; 7 = 251+
-                                </div>
-                            </group>
-                        </page>
-                    </notebook>
-
-                    <!-- ===================== SECCIÓN YELP ===================== -->
-                    <notebook invisible="source_key != 'yelp'">
-                        <page string="Filtros Yelp" name="yelp_filters">
-                            <group>
-                                <group string="Parámetros de Búsqueda">
-                                    <field name="yelp_term" placeholder="Ej: restaurante italiano, plomería, clínica"/>
-                                    <field name="yelp_location" required="source_key == 'yelp'"
-                                        placeholder="Ej: San Luis Potosí, Querétaro, CDMX"/>
-                                    <field name="yelp_categories" widget="many2many_tags" options="{'no_create': True, 'no_open': True}"/>
+                                    <field name="estrato_min" readonly="state != 'draft'"/>
+                                    <field name="estrato_max" readonly="state != 'draft'"/>
                                 </group>
                             </group>
                         </page>
-                    </notebook>
 
-                    <!-- ===================== SECCIÓN GOOGLE PLACES ===================== -->
-                    <notebook invisible="source_key != 'google'">
-                        <page string="Filtros Google Places" name="google_filters">
+                        <!-- Pestaña Búsqueda Yelp -->
+                        <page string="Criterios de Búsqueda" name="yelp_criteria" invisible="source_key != 'yelp'">
                             <group>
-                                <group string="Parámetros de Búsqueda">
-                                    <field name="google_query" placeholder="Ej: despacho contable, restaurante, dentista"/>
-                                    <field name="google_location" required="source_key == 'google'"
-                                        placeholder="Ej: San Luis Potosí, SLP, Querétaro"/>
-                                    <field name="google_place_type_ids" widget="many2many_tags" options="{'no_create': True, 'no_open': True}"/>
+                                <group>
+                                    <field name="yelp_term" placeholder="Ej: restaurantes, abogados, spas" readonly="state != 'draft'"/>
+                                    <field name="yelp_location" required="source_key == 'yelp'" placeholder="Ej: San Luis Potosí, Querétaro" readonly="state != 'draft'"/>
+                                    <field name="yelp_categories" widget="many2many_tags" options="{'no_create': True, 'no_open': True}" readonly="state != 'draft'"/>
                                 </group>
                             </group>
+                        </page>
+
+                        <!-- Pestaña Búsqueda Google Places -->
+                        <page string="Criterios de Búsqueda" name="google_criteria" invisible="source_key != 'google'">
+                            <group>
+                                <group>
+                                    <field name="google_query" placeholder="Ej: contadores públicos, clínicas dentales" readonly="state != 'draft'"/>
+                                    <field name="google_location" required="source_key == 'google'" placeholder="Ej: San Luis Potosí, SLP" readonly="state != 'draft'"/>
+                                    <field name="google_place_type_ids" widget="many2many_tags" options="{'no_create': True, 'no_open': True}" readonly="state != 'draft'"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- Pestaña Leads Generados -->
+                        <page string="Leads Generados" name="generated_leads" invisible="state != 'done'">
+                            <div class="mb-2">
+                                <button name="action_export_csv" type="object" class="btn btn-sm btn-outline-success" icon="fa-download" string="Exportar a CSV"/>
+                            </div>
+                            <field name="lead_ids" readonly="1">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="contact_name" optional="show"/>
+                                    <field name="phone"/>
+                                    <field name="email_from"/>
+                                    <field name="city"/>
+                                    <field name="stage_id"/>
+                                </list>
+                            </field>
                         </page>
                     </notebook>
                 </sheet>
