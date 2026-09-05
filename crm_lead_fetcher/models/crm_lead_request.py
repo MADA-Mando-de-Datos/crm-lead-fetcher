@@ -150,8 +150,9 @@ class CrmLeadRequest(models.Model):
         if self.state != 'draft':
             raise UserError(_('Solo se pueden procesar solicitudes en estado Borrador.'))
 
-        source_handler = self.env['lead.source.registry'].get_source(self.source_key)
-        if not source_handler:
+        try:
+            source_handler = self.env['lead.source.registry'].get_source(self.source_key)
+        except Exception:
             raise UserError(_('Fuente desconocida: %s', self.source_key))
 
         source_handler.validate_filters(self)
@@ -208,8 +209,9 @@ class CrmLeadRequest(models.Model):
     def action_test_connection(self):
         """Prueba la conectividad con la API seleccionada."""
         self.ensure_one()
-        source = self.env['lead.source.registry'].get_source(self.source_key)
-        if not source:
+        try:
+            source = self.env['lead.source.registry'].get_source(self.source_key)
+        except Exception:
             raise UserError(_('Fuente no encontrada: %s', self.source_key))
 
         try:
