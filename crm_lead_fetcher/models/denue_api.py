@@ -73,9 +73,13 @@ class DenueApi(models.AbstractModel):
             except ValueError as err:
                 raise LeadSourceDataError(_(
                     'DENUE devolvió una respuesta no válida (HTTP %s). '
-                    'Revise el nombre del endpoint y los parámetros.',
+                    'Revise los filtros de búsqueda.',
                     resp.status_code)) from err
-        raise LeadSourceConnectionError(_('Error de conexión con INEGI DENUE: %s', last_error))
+        token = self._token()
+        error_msg = str(last_error)
+        if token and token in error_msg:
+            error_msg = error_msg.replace(token, '[TOKEN_PROTEGIDO]')
+        raise LeadSourceConnectionError(_('Error de conexión con INEGI DENUE: %s', error_msg))
 
     @api.model
     def fetch_page(self, endpoint_key, ini=1, fin=100, **params):

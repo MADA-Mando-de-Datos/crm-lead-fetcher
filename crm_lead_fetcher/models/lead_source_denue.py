@@ -109,9 +109,11 @@ class LeadSourceDenue(models.AbstractModel):
             data = resp.json()
             if isinstance(data, list) and data:
                 return True, _('Conexión exitosa. DENUE respondió con %d registro(s) de prueba.', len(data))
-            return True, _('Conexión OK (el API respondió pero no devolvió datos para esta entidad).')
         except Exception as e:
-            return False, _('Error de conexión con DENUE: %s', e)
+            err_msg = str(e)
+            if token and token in err_msg:
+                err_msg = err_msg.replace(token, '[TOKEN_PROTEGIDO]')
+            return False, _('Error de conexión con DENUE: %s', err_msg)
 
     @api.model
     def get_available_filters(self):
