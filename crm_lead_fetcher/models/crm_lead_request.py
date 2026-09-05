@@ -121,6 +121,20 @@ class CrmLeadRequest(models.Model):
             'target': 'current',
         }
 
+    def action_get_lead_action(self):
+        self.ensure_one()
+        action = self.env['ir.actions.actions']._for_xml_id('crm.crm_lead_all_leads')
+        action['domain'] = [('id', 'in', self.lead_ids.ids), ('type', '=', 'lead')]
+        action['context'] = {'default_type': 'lead', 'search_default_type': 'lead'}
+        return action
+
+    def action_get_opportunity_action(self):
+        self.ensure_one()
+        action = self.env['ir.actions.actions']._for_xml_id('crm.crm_lead_opportunities')
+        action['domain'] = [('id', 'in', self.lead_ids.ids), ('type', '=', 'opportunity')]
+        action['context'] = {'default_type': 'opportunity', 'search_default_type': 'opportunity'}
+        return action
+
     def action_export_csv(self):
         """Exporta los leads generados a un archivo CSV descargable."""
         self.ensure_one()
@@ -171,14 +185,9 @@ class CrmLeadRequest(models.Model):
                 'error_msg': False,
             })
 
-            # Recarga el formulario manteniendo los datos
-            return {
-                'type': 'ir.actions.act_window',
-                'res_model': 'crm.lead.request',
-                'res_id': self.id,
-                'view_mode': 'form',
-                'target': 'current',
-            }
+            if self.lead_type == 'lead':
+                return self.action_get_lead_action()
+            return self.action_get_opportunity_action()
 
         except Exception as err:
             _logger.exception('Error ejecutando solicitud de leads %s: %s', self.id, err)
