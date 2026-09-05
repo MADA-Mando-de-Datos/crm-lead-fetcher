@@ -2,6 +2,7 @@ import time
 from urllib.parse import quote
 
 from odoo import _, api, models
+from ..exceptions import LeadSourceConnectionError, LeadSourceDataError, LeadSourceAuthError
 
 
 class DenueApi(models.AbstractModel):
@@ -12,8 +13,7 @@ class DenueApi(models.AbstractModel):
     PAGE_SIZE = 10000
     MAX_RETRIES = 3
     RETRY_BACKOFF = 3      # segundos base entre reintentos (crece por intento)
-    REQUEST_TIMEOUT = 60
-    MAX_GEO_DISTANCE = 5000  # límite documentado del API (metros)
+    REQUEST_TIMEOUT = 30
 
     # Endpoints oficiales verificados contra la doc de INEGI y sondas HTTP reales.
     # OJO: los nombres inventados (BuscarPorActividadYEntidad, BuscarPorNombre)
@@ -30,7 +30,6 @@ class DenueApi(models.AbstractModel):
         'area_act': ('BuscarAreaAct/{entidad}/{municipio}/{localidad}/{ageb}/{manzana}'
                      '/{sector}/{subsector}/{rama}/{clase}/{nombre}/{ini}/{fin}/{id}/{token}'),
         # condicion / lat,long (una sola pieza, separadas por coma) / distancia <= 5000 m
-        'by_geo': 'Buscar/{condicion}/{coordenadas}/{distancia}/{token}',
     }
 
     @api.model
@@ -40,10 +39,6 @@ class DenueApi(models.AbstractModel):
     @api.model
     def _token(self):
         return self._get_param('crm_lead_fetcher.denue_token').strip()
-
-    @api.model
-    def _max_records(self):
-        return int(self._get_param('crm_lead_fetcher.denue_max_records', '30000'))
 
     @api.model
     def _sleep_seconds(self):
@@ -56,13 +51,11 @@ class DenueApi(models.AbstractModel):
 
     @api.model
     def _make_request(self, url):
-        """GET con reintentos ante fallas de red (el gateway de INEGI es inestable
-        y suele abortar conexiones con BadStatusLine). Una respuesta HTTP que no
-        es JSON (p. ej. página 404 HTML) falla de inmediato: es determinística
-        y no merita reintento."""
+        """GET con reintentos ante fallas de red con backoff exponencial.
+        Respuestas no JSON se consideran determinísticas y lanzan LeadSourceDataError."""
         last_error = None
         resp = None
-        import requests  # import perezoso: evita romper la instalación en sistemas sin el paquete
+        import requests
         for attempt in range(self.MAX_RETRIES):
             try:
                 resp = requests.get(
@@ -78,17 +71,18 @@ class DenueApi(models.AbstractModel):
             try:
                 return resp.json()
             except ValueError as err:
-                # No incluir la URL en el mensaje: contiene el token
-                raise requests.RequestException(_(
+                raise LeadSourceDataError(_(
                     'DENUE devolvió una respuesta no válida (HTTP %s). '
                     'Revise el nombre del endpoint y los parámetros.',
                     resp.status_code)) from err
-        raise requests.RequestException(_('DENUE API error: %s', last_error))
+        raise LeadSourceConnectionError(_('Error de conexión con INEGI DENUE: %s', last_error))
 
     @api.model
     def fetch_page(self, endpoint_key, ini=1, fin=100, **params):
         """Fetch a single page for any endpoint"""
         token = self._token()
+        if not token:
+            raise LeadSourceAuthError(_('Token de DENUE (INEGI) no configurado en Ajustes > CRM.'))
         if endpoint_key not in self.ENDPOINTS:
             raise ValueError(_('Unknown endpoint: %s', endpoint_key))
 
@@ -165,20 +159,6 @@ class DenueApi(models.AbstractModel):
             'id': 0,
         }
         return self._paginate('area_act', params, max_records)
-
-    @api.model
-    def search_by_geo(self, actividad, lat, lon, distancia_metros, max_records):
-        """Búsqueda geográfica (endpoint Buscar): lat,long van juntas en un segmento
-        y la distancia tiene tope documentado de 5,000 m."""
-        dist = min(int(distancia_metros or 0), self.MAX_GEO_DISTANCE)
-        return self._paginate(
-            'by_geo',
-            {
-                'condicion': self._q(actividad),
-                'coordenadas': self._q('%s,%s' % (lat, lon)),
-                'distancia': dist,
-            },
-            max_records)
 
     @api.model
     def test_connection(self, entidad='24'):

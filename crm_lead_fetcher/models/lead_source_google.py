@@ -23,15 +23,10 @@ class LeadSourceGoogle(models.AbstractModel):
 
     @api.model
     def build_filters(self, wizard):
-        """Construye parámetros para el cliente Google Places API."""
         return {
             'query': (wizard.google_query or '').strip(),
             'location': (wizard.google_location or '').strip(),
             'place_types': [t.code for t in wizard.google_place_type_ids],
-            'radius': wizard.google_radius or None,
-            'min_price': int(wizard.google_min_price) if wizard.google_min_price else None,
-            'max_price': int(wizard.google_max_price) if wizard.google_max_price else None,
-            'open_now': wizard.google_open_now,
         }
 
     @api.model
@@ -41,10 +36,6 @@ class LeadSourceGoogle(models.AbstractModel):
             query=filters.get('query', ''),
             location=filters.get('location') or api._location(),
             place_types=filters.get('place_types', []),
-            radius=filters.get('radius'),
-            min_price=filters.get('min_price'),
-            max_price=filters.get('max_price'),
-            open_now=filters.get('open_now'),
             max_results=max_records,
             fetch_details=True,
         )
@@ -86,19 +77,6 @@ class LeadSourceGoogle(models.AbstractModel):
             {'field': 'place_types', 'label': 'Tipo de establecimiento', 'type': 'many2many',
              'model': 'crm.google.place.type',
              'help': 'Filtro por tipo de negocio según Google Places'},
-            {'field': 'radius', 'label': 'Radio (metros)', 'type': 'integer',
-             'help': 'Radio de búsqueda en metros (máximo 50,000)'},
-            {'field': 'min_price', 'label': 'Precio mínimo', 'type': 'selection',
-             'selection': [('0', 'Gratuito'), ('1', '$ (Económico)'), ('2', '$$ (Moderado)'),
-                           ('3', '$$$ (Caro)'), ('4', '$$$$ (Muy caro)')]},
-            {'field': 'max_price', 'label': 'Precio máximo', 'type': 'selection',
-             'selection': [('0', 'Gratuito'), ('1', '$ (Económico)'), ('2', '$$ (Moderado)'),
-                           ('3', '$$$ (Caro)'), ('4', '$$$$ (Muy caro)')]},
-            {'field': 'open_now', 'label': 'Solo abiertos ahora', 'type': 'boolean'},
-            {'field': 'min_rating', 'label': 'Rating mínimo', 'type': 'float',
-             'help': 'Filtrar por calificación mínima (1 a 5 estrellas)'},
-            {'field': 'min_reviews', 'label': 'Reseñas mínimas', 'type': 'integer',
-             'help': 'Filtrar por número mínimo de opiniones en Google'},
         ]
 
     @api.model
@@ -106,25 +84,14 @@ class LeadSourceGoogle(models.AbstractModel):
         return str(record.get('place_id') or record.get('id') or '').strip()
 
     @api.model
-    def get_automatic_tag_ids(self, record):
-        """Genera etiquetas basadas en los tipos de Google Places."""
+    def get_automatic_tag_names(self, record):
+        """Genera nombres de etiquetas basadas en los tipos de Google Places."""
         types = record.get('types', [])
-        google_tags = [
+        return [
             f"Google: {t.replace('_', ' ')}"
             for t in types[:3]
             if t not in ('point_of_interest', 'establishment')
         ]
-        if not google_tags:
-            return []
-
-        Tag = self.env['crm.tag'].sudo()
-        tag_ids = []
-        for tag_name in google_tags:
-            tag = Tag.search([('name', '=', tag_name)], limit=1)
-            if not tag:
-                tag = Tag.create({'name': tag_name})
-            tag_ids.append(tag.id)
-        return tag_ids
 
     @api.model
     def record_to_lead_vals(self, record, lead_type, team_id, user_id, tag_ids, request_id):
@@ -229,16 +196,7 @@ class LeadSourceGoogle(models.AbstractModel):
 
     @api.model
     def post_filter(self, records, wizard):
-        """Filtra registros de Google Places por rating mínimo y número de reseñas."""
-        filtered = list(records)
-        min_rating = getattr(wizard, 'google_min_rating', 0)
-        min_reviews = getattr(wizard, 'google_min_reviews', 0)
-
-        if min_rating and min_rating > 0:
-            filtered = [r for r in filtered if (r.get('rating') or 0) >= min_rating]
-        if min_reviews and min_reviews > 0:
-            filtered = [r for r in filtered if (r.get('user_ratings_total') or 0) >= min_reviews]
-        return filtered
+        return records
 
     @api.model
     def get_scan_cap(self):

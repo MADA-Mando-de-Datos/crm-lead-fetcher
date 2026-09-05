@@ -22,10 +22,6 @@ class DenueLeadHelpers(models.AbstractModel):
         return ESTRATO_MAP.get((estrato_text or '').strip(), 0)
 
     @api.model
-    def estrato_label(self, estrato_int):
-        return ESTRATO_LABELS.get(estrato_int, '')
-
-    @api.model
     def _get_city(self, record):
         """Extrae ciudad/municipio/localidad del registro DENUE"""
         # Prioridad: Localidad > Municipio > Ciudad
@@ -41,16 +37,6 @@ class DenueLeadHelpers(models.AbstractModel):
         if len(parts) >= 2:
             return parts[1]
         return parts[0] if parts else ''
-
-    @api.model
-    def ubicacion_text(self, record):
-        """Texto de ubicación para filtros 'contiene' (municipio/localidad)."""
-        return ' '.join(filter(None, [
-            record.get('Municipio') or '',
-            record.get('Localidad') or '',
-            record.get('Ciudad') or '',
-            (record.get('Ubicacion') or '').replace(',', ' '),
-        ]))
 
     @api.model
     def lead_vals(self, record, lead_type, team_id, user_id, tag_ids, request_id):

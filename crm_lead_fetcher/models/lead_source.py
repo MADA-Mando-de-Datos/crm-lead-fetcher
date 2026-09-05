@@ -54,8 +54,8 @@ class LeadSource(models.AbstractModel):
         """Extrae el identificador único del registro para deduplicación."""
         return str(record.get('external_id') or record.get('place_id') or record.get('id') or record.get('Id') or '').strip()
 
-    def get_automatic_tag_ids(self, record):
-        """Retorna IDs de etiquetas crm.tag a asignar automáticamente al lead."""
+    def get_automatic_tag_names(self, record):
+        """Retorna lista de strings con nombres de etiquetas a asignar automáticamente."""
         return []
 
     def post_filter(self, records, wizard):
@@ -90,15 +90,27 @@ class LeadSourceRegistry(models.AbstractModel):
         }
 
     @api.model
+    def _get_short_labels(self):
+        """Etiquetas cortas de cada fuente, usadas en el selection source_key.
+        Single source of truth del texto visible; evita el desborde en vistas
+        compactas (kanban) sin hardcodear el nombre en la plantilla."""
+        return {
+            'denue': 'DENUE (INEGI)',
+            'yelp': 'Yelp',
+            'google': 'Google Places',
+        }
+
+    @api.model
     def list_sources(self):
         """Lista de (key, nombre) de fuentes disponibles."""
         sources = self._get_sources()
+        labels = self._get_short_labels()
         result = []
         for k, v in sources.items():
             if v in self.env:
-                result.append((k, self.env[v]._description))
+                result.append((k, labels.get(k, self.env[v]._description)))
             else:
-                result.append((k, k))
+                result.append((k, labels.get(k, k)))
         return result
 
     @api.model
@@ -108,25 +120,3 @@ class LeadSourceRegistry(models.AbstractModel):
             return ' '.join((s or '').lower().split())
         return '|'.join([norm(name), norm(city), norm(phone)])
 
-    @api.model
-    def find_existing_by_fingerprint(self, vals):
-        """Reconcilia un candidato de lead contra leads existentes por nombre+ciudad o teléfono.
-
-        Devuelve el lead existente (recordset) o un recordset vacío si no hay coincidencia.
-        """
-        Lead = self.env['crm.lead']
-        name = (vals.get('name') or vals.get('partner_name') or '').strip()
-        phone = (vals.get('phone') or '').strip()
-        city = (vals.get('city') or '').strip()
-
-        if not name:
-            return Lead
-
-        domain = ['|', ('name', 'ilike', name)]
-        if phone:
-            domain = ['|', '|', ('name', 'ilike', name), ('phone', '=', phone),
-                      ('mobile', '=', phone)]
-        elif city:
-            domain = ['|', ('name', 'ilike', name), ('city', '=', city)]
-
-        return Lead.search(domain, limit=1)

@@ -38,24 +38,6 @@ class LeadSourceDenue(models.AbstractModel):
             raise UserError(_('Capture la actividad o palabra clave a buscar.'))
         if st == 'by_name_state' and not (wizard.nombre_busqueda or '').strip():
             raise UserError(_('Capture el nombre del establecimiento a buscar.'))
-        if st == 'by_geo':
-            lat = wizard.latitud
-            lon = wizard.longitud
-            if lat is None or lon is None:
-                raise UserError(_('Capture latitud y longitud válidas para la búsqueda geográfica.'))
-            try:
-                lat_f = float(lat)
-                lon_f = float(lon)
-            except (TypeError, ValueError):
-                raise UserError(_('Latitud y longitud deben ser valores numéricos.'))
-            if not (-90 <= lat_f <= 90) or not (-180 <= lon_f <= 180):
-                raise UserError(_('Latitud debe estar entre -90 y 90, y longitud entre -180 y 180.'))
-            if not (wizard.distancia_metros or 0) > 0:
-                raise UserError(_('El radio de búsqueda debe ser mayor a 0 metros.'))
-            if wizard.distancia_metros > MAX_DENUE_GEO_DISTANCE:
-                raise UserError(_(
-                    'El radio máximo permitido por DENUE es de %s metros.',
-                    '{:,}'.format(MAX_DENUE_GEO_DISTANCE)))
 
     @api.model
     def build_filters(self, wizard):
@@ -66,10 +48,6 @@ class LeadSourceDenue(models.AbstractModel):
             'sectores': [s.code for s in wizard.sector_ids],
             'actividad': (wizard.actividad or '').strip(),
             'nombre': (wizard.nombre_busqueda or '').strip(),
-            'lat': wizard.latitud,
-            'lon': wizard.longitud,
-            'radio_km': (wizard.distancia_metros or 5000) / 1000.0,
-            'municipio': (wizard.municipio or '').strip(),
             'estrato_min': wizard.estrato_min or None,
             'estrato_max': wizard.estrato_max or None,
         }
@@ -96,12 +74,14 @@ class LeadSourceDenue(models.AbstractModel):
     def _generators_for(self, search_type, filters, entidad, max_records):
         api = self._get_api()
         if search_type == 'by_state':
-            sectores = filters.get('sectores') or []
-            if sectores:
-                return [
-                    api.search_by_area_act(entidad, code, max_records)
-                    for code in sectores
-                ]
+            codes = [str(c) for c in (filters.get('sectores') or [])]
+            if codes:
+                # El gateway de INEGI aborta la conexión (HTTP 000) cuando se
+                # consulta BuscarAreaAct por sub-sector (código de 3 dígitos).
+                # Para evitar ese fallo se consulta por sector de 2 dígitos
+                # (padre) y el sub-sector se filtra en cliente (post_filter).
+                padres = sorted({code[:2] for code in codes})
+                return [api.search_by_area_act(entidad, p, max_records) for p in padres]
             return [api.search_by_state(entidad, max_records)]
         if search_type == 'by_activity_state':
             actividad = filters.get('actividad', '')
@@ -144,21 +124,15 @@ class LeadSourceDenue(models.AbstractModel):
                   ('by_state', 'Todo el estado'),
                   ('by_activity_state', 'Por actividad + estado'),
                   ('by_name_state', 'Por nombre + estado'),
-                  ('by_geo', 'Por geolocalización (radio km)'),
               ], 'required': True, 'default': 'by_state'},
             {'field': 'actividad', 'label': 'Actividad / Palabra clave', 'type': 'char'},
             {'field': 'nombre_busqueda', 'label': 'Nombre del establecimiento', 'type': 'char'},
-            {'field': 'municipio', 'label': 'Municipio / Ciudad', 'type': 'char',
-              'help': 'Filtrar por municipio (búsqueda en cliente)'},
             {'field': 'sector_ids', 'label': 'Sectores SCIAN', 'type': 'many2many',
               'model': 'crm.denue.sector'},
             {'field': 'estrato_min', 'label': 'Estrato mínimo', 'type': 'selection',
               'selection': [(i, ESTRATO_LABELS[i]) for i in range(1, 8)]},
             {'field': 'estrato_max', 'label': 'Estrato máximo', 'type': 'selection',
               'selection': [(i, ESTRATO_LABELS[i]) for i in range(1, 8)]},
-            {'field': 'latitud', 'label': 'Latitud', 'type': 'float'},
-            {'field': 'longitud', 'label': 'Longitud', 'type': 'float'},
-            {'field': 'distancia_metros', 'label': 'Radio (metros)', 'type': 'float', 'default': 5000},
         ]
 
     @api.model
@@ -166,24 +140,20 @@ class LeadSourceDenue(models.AbstractModel):
         return str(record.get('Id') or '').strip()
 
     @api.model
-    def get_automatic_tag_ids(self, record):
-        """Devuelve IDs de etiquetas de sector SCIAN para un registro DENUE."""
+    def get_automatic_tag_names(self, record):
+        """Devuelve nombres de etiquetas de sector SCIAN para un registro DENUE."""
         code = str(record.get('SUBSECTOR_ACTIVIDAD_ID') or
                    record.get('SECTOR_ACTIVIDAD_ID') or '').strip()
         if not code:
             return []
         Sector = self.env['crm.denue.sector']
-        Tag = self.env['crm.tag'].sudo()
         sector = Sector.search([('code', '=', code)], limit=1)
         if not sector and len(code) >= 3:
             sector = Sector.search([('code', '=', code[:2])], limit=1)
         if not sector:
             return []
-        tag_name = f"{sector.code} {sector.name}"
-        tag = Tag.search([('name', '=', tag_name)], limit=1)
-        if not tag:
-            tag = Tag.create({'name': tag_name})
-        return tag.ids
+        label = sector.sector_name or sector.name
+        return [f"{sector.code} {label}"[:40]]
 
     @api.model
     def record_to_lead_vals(self, record, lead_type, team_id, user_id, tag_ids, request_id):
@@ -192,30 +162,42 @@ class LeadSourceDenue(models.AbstractModel):
 
     @api.model
     def post_filter(self, records, wizard):
-        """Aplica filtros client-side de DENUE: estrato, municipio.
-
-        En búsquedas geográficas reordena los resultados por cercanía al
-        punto solicitado (usando Latitud/Longitud del registro).
-        """
+        """Aplica filtros client-side de DENUE: estrato y subsector."""
         filtered = list(records)
-        municipio = getattr(wizard, 'municipio', None)
-        if municipio and isinstance(municipio, str) and municipio.strip():
-            m = municipio.strip().upper()
-            helper = self.env['denue.lead.helpers']
-            filtered = [
-                r for r in filtered
-                if (r.get('mun') or '').strip().upper() == m
-                or (r.get('loc') or '').strip().upper() == m
-                or m in helper.ubicacion_text(r).upper()
-            ]
         estrato_min = getattr(wizard, 'estrato_min', None)
         estrato_max = getattr(wizard, 'estrato_max', None)
+        helpers = self.env['denue.lead.helpers']
+
+        def _get_estrato_val(r):
+            raw = r.get('estrato') or r.get('Estrato')
+            if isinstance(raw, int):
+                return raw
+            if isinstance(raw, str):
+                if raw.isdigit():
+                    return int(raw)
+                return helpers.estrato_to_int(raw)
+            return 0
+
         if estrato_min:
             emin = int(estrato_min)
-            filtered = [r for r in filtered if int(r.get('estrato') or 0) >= emin]
+            filtered = [r for r in filtered if _get_estrato_val(r) >= emin]
         if estrato_max:
             emax = int(estrato_max)
-            filtered = [r for r in filtered if int(r.get('estrato') or 0) <= emax]
+            filtered = [r for r in filtered if _get_estrato_val(r) <= emax]
+
+        # Filtrado por sub-sector (código de 3 dígitos) en cliente: el gateway
+        # de INEGI aborta BuscarAreaAct por sub-sector, así que se consulta el
+        # sector padre (2 dígitos) y se acota aquí usando SUBSECTOR_ACTIVIDAD_ID.
+        subs = {str(s.code) for s in wizard.sector_ids if len(str(s.code)) >= 3}
+        if subs:
+            full_sectors = {str(s.code) for s in wizard.sector_ids if len(str(s.code)) == 2}
+
+            def _keep_sub(r):
+                sub = str(r.get('SUBSECTOR_ACTIVIDAD_ID') or '')
+                sec = str(r.get('SECTOR_ACTIVIDAD_ID') or '')
+                return sub in subs or sec in full_sectors
+
+            filtered = [r for r in filtered if _keep_sub(r)]
 
         return filtered
 

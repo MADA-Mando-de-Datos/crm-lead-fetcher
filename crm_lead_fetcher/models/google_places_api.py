@@ -1,7 +1,12 @@
 import time
 
 from odoo import _, api, models
-from odoo.exceptions import UserError
+from ..exceptions import (
+    LeadSourceConnectionError,
+    LeadSourceAuthError,
+    LeadSourceQuotaError,
+    LeadSourceDataError,
+)
 
 
 class GooglePlacesAPI(models.AbstractModel):
@@ -38,7 +43,7 @@ class GooglePlacesAPI(models.AbstractModel):
 
         api_key = self._api_key()
         if not api_key:
-            raise UserError(_('Configure la API Key de Google Places en Ajustes > CRM > Minado de Leads.'))
+            raise LeadSourceAuthError(_('Configure la API Key de Google Places en Ajustes > CRM > Minado de Leads.'))
 
         params = params or {}
         params['key'] = api_key
@@ -57,21 +62,28 @@ class GooglePlacesAPI(models.AbstractModel):
                 elif status == 'ZERO_RESULTS':
                     return {'results': [], 'status': status}
                 elif status == 'OVER_QUERY_LIMIT':
-                    raise UserError(_('Límite de cuota excedido en Google Places API. Verifique su cuota o facturación en Google Cloud Console.'))
+                    raise LeadSourceQuotaError(_('Límite de cuota excedido en Google Places API. Verifique su cuota o facturación en Google Cloud Console.'))
                 elif status == 'REQUEST_DENIED':
                     err_msg = data.get('error_message') or _('Petición rechazada por Google. Verifique que la API Places esté habilitada y la clave sea válida.')
-                    raise UserError(_('Error en Google Places API: %s', err_msg))
+                    raise LeadSourceAuthError(_('Error de autorización en Google Places API: %s', err_msg))
                 elif status == 'INVALID_REQUEST':
                     err_msg = data.get('error_message') or _('Parámetros de búsqueda inválidos.')
-                    raise UserError(_('Petición inválida a Google Places: %s', err_msg))
+                    raise LeadSourceDataError(_('Petición inválida a Google Places: %s', err_msg))
                 else:
                     return data
-            except requests.exceptions.RequestException as err:
+            except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as err:
                 last_error = err
                 if attempt < self.MAX_RETRIES - 1:
                     time.sleep(self.RETRY_BACKOFF * (attempt + 1))
                 continue
-        raise UserError(_('Error de conexión con Google Places API: %s', last_error))
+            except (LeadSourceQuotaError, LeadSourceAuthError, LeadSourceDataError):
+                raise
+            except ValueError as err:
+                raise LeadSourceDataError(_('Respuesta no JSON recibida de Google Places API.')) from err
+            except requests.exceptions.RequestException as err:
+                last_error = err
+                break
+        raise LeadSourceConnectionError(_('Error de conexión con Google Places API: %s', last_error))
 
     @api.model
     def get_place_details(self, place_id):

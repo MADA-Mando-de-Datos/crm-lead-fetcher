@@ -26,51 +26,22 @@ class LeadSourceYelp(models.AbstractModel):
             'term': (wizard.yelp_term or '').strip(),
             'location': (wizard.yelp_location or '').strip(),
             'categories': [c.alias for c in wizard.yelp_categories],
-            'radius': wizard.yelp_radius or None,
-            'price': wizard.yelp_price or None,
-            'sort_by': wizard.yelp_sort_by or 'best_match',
-            'open_now': wizard.yelp_open_now,
-            'transactions': wizard.yelp_transactions,
-            'attributes': wizard.yelp_attributes,
-            'latitude': wizard.yelp_latitude or None,
-            'longitude': wizard.yelp_longitude or None,
         }
 
     @api.model
     def search(self, filters, max_records):
         api = self._get_api()
         location = filters.get('location') or api._location()
-        latitude = filters.get('latitude')
-        longitude = filters.get('longitude')
-        sort_by = filters.get('sort_by', 'best_match')
-        if sort_by == 'distance' and latitude and longitude:
-            location = None
         params = {
             'term': filters.get('term', ''),
             'location': location,
             'categories': filters.get('categories', []),
-            'radius': filters.get('radius'),
-            'price': filters.get('price'),
-            'sort_by': sort_by,
-            'open_now': filters.get('open_now'),
-            'transactions': filters.get('transactions'),
-            'attributes': filters.get('attributes'),
-            'latitude': latitude,
-            'longitude': longitude,
         }
         records, total = api.paginate(
             term=params['term'],
             location=params['location'],
             categories=params['categories'],
-            radius=params['radius'],
-            price=params['price'],
-            sort_by=params['sort_by'],
             max_results=max_records,
-            open_now=params['open_now'],
-            transactions=params['transactions'],
-            attributes=params['attributes'],
-            latitude=params['latitude'],
-            longitude=params['longitude'],
         )
         return records
 
@@ -105,33 +76,6 @@ class LeadSourceYelp(models.AbstractModel):
             {'field': 'yelp_categories', 'label': 'Categorías', 'type': 'many2many',
              'model': 'crm.yelp.category',
              'help': 'Categorías Yelp (ej: restaurants, plumbing)'},
-            {'field': 'yelp_radius', 'label': 'Radio (metros)', 'type': 'integer',
-             'help': 'Radio de búsqueda en metros (máximo 40,000)'},
-            {'field': 'yelp_price', 'label': 'Nivel de precio', 'type': 'selection',
-             'selection': [('1', '$ (Económico)'), ('2', '$$ (Moderado)'),
-                           ('3', '$$$ (Caro)'), ('4', '$$$$ (Muy caro)')],
-             'help': 'Filtrar por nivel de precio'},
-            {'field': 'yelp_sort_by', 'label': 'Ordenar por', 'type': 'selection',
-             'selection': [('best_match', 'Mejor coincidencia'),
-                           ('rating', 'Mejor calificación'),
-                           ('review_count', 'Más reseñas'),
-                           ('distance', 'Más cercano')],
-             'default': 'best_match'},
-            {'field': 'yelp_open_now', 'label': 'Solo abiertos ahora', 'type': 'boolean'},
-            {'field': 'yelp_transactions', 'label': 'Servicios disponibles', 'type': 'selection',
-             'selection': [('delivery', 'Con entrega a domicilio'),
-                           ('pickup', 'Con recogida en tienda'),
-                           ('restaurant_reservation', 'Con reservación')]},
-            {'field': 'yelp_attributes', 'label': 'Atributos especiales', 'type': 'selection',
-             'selection': [('hot_and_new', 'Nuevos y populares'),
-                           ('deals', 'Con ofertas'),
-                           ('reservation', 'Con reservación'),
-                           ('request_a_quote', 'Cotización bajo solicitud'),
-                           ('cashback', 'Devolución de dinero')]},
-            {'field': 'yelp_min_rating', 'label': 'Rating mínimo', 'type': 'float'},
-            {'field': 'yelp_min_reviews', 'label': 'Reseñas mínimas', 'type': 'integer'},
-            {'field': 'yelp_latitude', 'label': 'Latitud (orden por distancia)', 'type': 'float'},
-            {'field': 'yelp_longitude', 'label': 'Longitud (orden por distancia)', 'type': 'float'},
         ]
 
     @api.model
@@ -139,22 +83,11 @@ class LeadSourceYelp(models.AbstractModel):
         return str(record.get('id') or '').strip()
 
     @api.model
-    def get_automatic_tag_ids(self, record):
-        """Genera y asigna etiquetas a partir de las categorías de Yelp."""
+    def get_automatic_tag_names(self, record):
+        """Genera nombres de etiquetas a partir de las categorías de Yelp."""
         cats = record.get('categories', [])
         cat_aliases = [c.get('alias', '') for c in cats if c.get('alias')]
-        if not cat_aliases:
-            return []
-
-        Tag = self.env['crm.tag'].sudo()
-        tag_ids = []
-        for alias in cat_aliases[:3]:
-            tag_name = f"Yelp: {alias}"
-            tag = Tag.search([('name', '=', tag_name)], limit=1)
-            if not tag:
-                tag = Tag.create({'name': tag_name})
-            tag_ids.append(tag.id)
-        return tag_ids
+        return [f"Yelp: {alias}" for alias in cat_aliases[:3]]
 
     @api.model
     def record_to_lead_vals(self, record, lead_type, team_id, user_id, tag_ids, request_id):
@@ -214,15 +147,8 @@ class LeadSourceYelp(models.AbstractModel):
 
     @api.model
     def post_filter(self, records, wizard):
-        """Filtra registros Yelp por rating mínimo y review count."""
-        filtered = list(records)
-        min_rating = getattr(wizard, 'yelp_min_rating', None)
-        min_reviews = getattr(wizard, 'yelp_min_reviews', None)
-        if min_rating:
-            filtered = [r for r in filtered if (r.get('rating') or 0) >= min_rating]
-        if min_reviews:
-            filtered = [r for r in filtered if (r.get('review_count') or 0) >= min_reviews]
-        return filtered
+        """Devuelve registros Yelp sin filtrado secundario innecesario."""
+        return records
 
     @api.model
     def get_scan_cap(self):

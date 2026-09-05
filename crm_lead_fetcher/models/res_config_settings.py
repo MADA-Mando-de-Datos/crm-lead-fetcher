@@ -1,4 +1,5 @@
-from odoo import _, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class ResConfigSettings(models.TransientModel):
@@ -66,6 +67,18 @@ class ResConfigSettings(models.TransientModel):
         config_parameter='crm_lead_fetcher.google_max_results',
         help='Máximo de resultados por búsqueda (máximo 60 por límites de Google Text Search).',
     )
+
+    @api.constrains('yelp_max_results')
+    def _check_yelp_max_results(self):
+        for record in self:
+            if record.yelp_max_results and (record.yelp_max_results <= 0 or record.yelp_max_results > 240):
+                raise UserError(_('El máximo de resultados para Yelp debe estar entre 1 y 240.'))
+
+    @api.constrains('google_max_results')
+    def _check_google_max_results(self):
+        for record in self:
+            if record.google_max_results and (record.google_max_results <= 0 or record.google_max_results > 60):
+                raise UserError(_('El máximo de resultados para Google Places debe estar entre 1 y 60.'))
 
     def _test_source_connection(self, source_key):
         """Método unificado para probar conectividad delegando a la fuente correspondiente."""

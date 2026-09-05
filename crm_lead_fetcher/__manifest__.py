@@ -1,6 +1,6 @@
 {
-    'name': 'Lead Mining CRM',
-    'version': '18.0.5.0.0',
+    'name': 'Lead Mining CRM (DENUE + Yelp + Google)',
+    'version': '18.0.1.0.0',
     'category': 'Sales/CRM',
     'summary': 'Generate CRM leads from multiple sources: DENUE (INEGI), Yelp and Google Places',
     'description': """
@@ -24,10 +24,8 @@ Features:
 - 100% Spanish interface
     """,
     'license': 'LGPL-3',
-    'author': 'MADA',
-    'images': ['static/description/main_screenshot.png'],
-    'price': 9.0,
-    'currency': 'EUR',
+    'author': 'MADA | Mando de Datos',
+    'website': 'https://madamexico.me',
     'support': 'hola@madamexico.me',
     'depends': ['base', 'crm'],
     'data': [

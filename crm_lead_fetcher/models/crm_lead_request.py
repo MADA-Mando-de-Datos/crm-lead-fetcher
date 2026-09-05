@@ -1,6 +1,13 @@
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
+from ..exceptions import (
+    LeadSourceConnectionError,
+    LeadSourceAuthError,
+    LeadSourceQuotaError,
+    LeadSourceDataError,
+    LeadSourceError,
+)
 from .lead_source import ESTRATO_LABELS
 
 MAX_LEAD = 200
@@ -42,7 +49,9 @@ class CrmLeadRequest(models.Model):
     ], string='Estado', required=True, default='draft')
     error_type = fields.Selection([
         ('no_result', 'Sin resultados'),
-        ('connection', 'Error de conexión'),
+        ('connection', 'Error de conexión / Timeout'),
+        ('auth', 'Error de credenciales / API Key'),
+        ('quota', 'Límite de cuota excedido'),
     ], string='Tipo de error', copy=False, readonly=True)
     error_msg = fields.Text(string='Detalles del error', readonly=True, copy=False)
 
@@ -75,12 +84,8 @@ class CrmLeadRequest(models.Model):
         string='Estrato máximo', default='7')
     estrato_min_label = fields.Char(compute='_compute_estrato_labels', string='Rango del estrato mínimo')
     estrato_max_label = fields.Char(compute='_compute_estrato_labels', string='Rango del estrato máximo')
-    municipio = fields.Char(string='Municipio / Localidad')
     actividad = fields.Char(string='Actividad / Palabra clave')
     nombre_busqueda = fields.Char(string='Nombre del establecimiento')
-    latitud = fields.Float(string='Latitud', digits=(10, 7))
-    longitud = fields.Float(string='Longitud', digits=(10, 7))
-    distancia_metros = fields.Float(string='Radio DENUE (metros)', default=5000)
     search_type = fields.Selection([
         ('by_state', 'Todo el estado (por sectores)'),
         ('by_activity_state', 'Por actividad / palabra clave'),
@@ -94,40 +99,6 @@ class CrmLeadRequest(models.Model):
                                 help='Ciudad o dirección (ej: "CDMX", "Monterrey, Nuevo León")')
     yelp_categories = fields.Many2many('crm.yelp.category', string='Categorías Yelp',
                                        help='Categorías de negocio en Yelp')
-    yelp_radius = fields.Integer(string='Radio Yelp (metros)',
-                                 help='Radio de búsqueda en metros (máximo 40,000)')
-    yelp_price = fields.Selection([
-        ('1', '$ (Económico)'), ('2', '$$ (Moderado)'),
-        ('3', '$$$ (Caro)'), ('4', '$$$$ (Muy caro)')
-    ], string='Nivel de precio')
-    yelp_sort_by = fields.Selection([
-        ('best_match', 'Mejor coincidencia'),
-        ('rating', 'Mejor calificación'),
-        ('review_count', 'Más reseñas'),
-        ('distance', 'Más cercano'),
-    ], string='Ordenar por', default='best_match')
-    yelp_min_rating = fields.Float(string='Rating mínimo', default=0,
-                                   help='Filtrar negocios con rating mínimo (0 = sin filtro)')
-    yelp_min_reviews = fields.Integer(string='Reseñas mínimas', default=0,
-                                      help='Filtrar negocios con al menos N reseñas (0 = sin filtro)')
-    yelp_open_now = fields.Boolean(string='Solo abiertos ahora (Yelp)',
-                                   help='Filtrar negocios que están abiertos en este momento')
-    yelp_transactions = fields.Selection([
-        ('delivery', 'Con entrega a domicilio'),
-        ('pickup', 'Con recogida en tienda'),
-        ('restaurant_reservation', 'Con reservación'),
-    ], string='Servicios disponibles')
-    yelp_attributes = fields.Selection([
-        ('hot_and_new', 'Nuevos y populares'),
-        ('deals', 'Con ofertas'),
-        ('reservation', 'Con reservación'),
-        ('request_a_quote', 'Cotización bajo solicitud'),
-        ('cashback', 'Devolución de dinero'),
-    ], string='Atributos especiales')
-    yelp_latitude = fields.Float(string='Latitud (para orden por distancia)', digits=(10, 7),
-                                 help='Usar esta latitud al ordenar por distancia')
-    yelp_longitude = fields.Float(string='Longitud (para orden por distancia)', digits=(10, 7),
-                                  help='Usar esta longitud al ordenar por distancia')
 
     # --- Campos GOOGLE PLACES ---
     google_query = fields.Char(string='Término de búsqueda Google',
@@ -136,22 +107,6 @@ class CrmLeadRequest(models.Model):
                                   help='Ciudad o dirección (ej: "San Luis Potosí, SLP", "Guadalajara")')
     google_place_type_ids = fields.Many2many('crm.google.place.type', string='Tipo de establecimiento',
                                              help='Giro comercial según Google Places')
-    google_radius = fields.Integer(string='Radio Google (metros)', default=5000,
-                                   help='Radio de búsqueda en metros (máximo 50,000)')
-    google_min_price = fields.Selection([
-        ('0', 'Gratuito'), ('1', '$ (Económico)'), ('2', '$$ (Moderado)'),
-        ('3', '$$$ (Caro)'), ('4', '$$$$ (Muy caro)')
-    ], string='Precio mínimo')
-    google_max_price = fields.Selection([
-        ('0', 'Gratuito'), ('1', '$ (Económico)'), ('2', '$$ (Moderado)'),
-        ('3', '$$$ (Caro)'), ('4', '$$$$ (Muy caro)')
-    ], string='Precio máximo')
-    google_min_rating = fields.Float(string='Rating mínimo Google', default=0,
-                                     help='Filtrar lugares con calificación mínima (0 = sin filtro)')
-    google_min_reviews = fields.Integer(string='Reseñas mínimas Google', default=0,
-                                        help='Filtrar lugares con al menos N opiniones (0 = sin filtro)')
-    google_open_now = fields.Boolean(string='Solo abiertos ahora (Google)',
-                                     help='Filtrar lugares abiertos en este momento')
 
     @api.depends('lead_ids')
     def _compute_lead_count(self):
@@ -194,41 +149,23 @@ class CrmLeadRequest(models.Model):
             elif val > 7:
                 self.estrato_max = '7'
 
-    def action_draft(self):
+    def action_duplicate_request(self):
+        """Crea una nueva solicitud en borrador con los mismos filtros, preservando el historial y los leads existentes."""
         self.ensure_one()
-        leads = self.env['crm.lead'].search([('lead_request_id', '=', self.id)])
-        n = len(leads)
-        if leads:
-            leads.unlink()
-        self.write({'name': _('Nueva'), 'state': 'draft', 'error_type': False, 'error_msg': False})
+        new_record = self.copy({
+            'name': _('Nueva'),
+            'state': 'draft',
+            'error_type': False,
+            'error_msg': False,
+            'lead_ids': [(5, 0, 0)],
+        })
         return {
-            'type': 'ir.actions.client',
-            'tag': 'display_notification',
-            'params': {
-                'title': _('Listo para nueva búsqueda'),
-                'message': _('Se eliminaron los %d lead(s) previos. Puede comenzar una nueva búsqueda.', n),
-                'type': 'success',
-                'sticky': False,
-            },
-        }
-
-    def action_delete_with_leads(self):
-        self.ensure_one()
-        leads = self.env['crm.lead'].search([('lead_request_id', '=', self.id)])
-        n = len(leads)
-        if leads:
-            leads.unlink()
-        request_name = self.name
-        self.unlink()
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'display_notification',
-            'params': {
-                'title': _('Eliminado'),
-                'message': _('Se eliminó la solicitud %s y %d lead(s) asociado(s).', request_name, n),
-                'type': 'warning',
-                'sticky': False,
-            },
+            'name': _('Generar Leads'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'crm.lead.request',
+            'view_mode': 'form',
+            'res_id': new_record.id,
+            'target': 'current',
         }
 
     def action_export_csv(self):
@@ -249,23 +186,25 @@ class CrmLeadRequest(models.Model):
 
         try:
             records, stats = self._perform_request()
+        except LeadSourceConnectionError as err:
+            friendly = _(
+                'El servicio externo no responde en este momento (error de conexión o timeout).\n\n'
+                'Detalle: %s\n\n'
+                'Puede reintentar usando el botón "Reintentar" en unos minutos.', err)
+            self.write({'state': 'error', 'error_type': 'connection', 'error_msg': friendly})
+            raise UserError(_('Error de conexión con la fuente de datos: %s', err))
+        except LeadSourceAuthError as err:
+            self.write({'state': 'error', 'error_type': 'auth', 'error_msg': str(err)})
+            raise UserError(_('Error de autenticación / credenciales: %s', err))
+        except LeadSourceQuotaError as err:
+            self.write({'state': 'error', 'error_type': 'quota', 'error_msg': str(err)})
+            raise UserError(_('Límite de cuota excedido: %s', err))
+        except (LeadSourceDataError, LeadSourceError) as err:
+            self.write({'state': 'error', 'error_msg': str(err)})
+            raise UserError(_('Error en la fuente de datos: %s', err))
         except Exception as err:
-            error_str = str(err)
-            is_connection = any(kw in error_str.lower() for kw in (
-                'connection', 'badstatusline', '000', 'timeout', 'connectionerror',
-                'connection aborted', 'remote disconnected', 'connection refused',
-                'bearer', '401', '403'))
-            if is_connection:
-                friendly = _(
-                    'El servicio de datos no responde en este momento '
-                    '(error de conexión o timeout). Esto es temporal.\n\n'
-                    'Puede reintentar usando el botón "Reintentar", '
-                    'o espere unos minutos y vuelva a intentarlo.')
-                self.write({'state': 'error', 'error_type': 'connection', 'error_msg': friendly})
-                raise UserError(_('El servicio de datos no responde. Intente de nuevo en unos segundos.'))
-            else:
-                self.write({'state': 'error', 'error_msg': error_str})
-                raise UserError(_('No se pudo ejecutar la solicitud: %s', err))
+            self.write({'state': 'error', 'error_msg': str(err)})
+            raise UserError(_('No se pudo ejecutar la solicitud: %s', err))
 
         if records:
             created = self._create_leads_from_response(records)
@@ -305,6 +244,26 @@ class CrmLeadRequest(models.Model):
         self.ensure_one()
         source = self.env['lead.source.registry'].get_source(self.source_key)
         source.validate_filters(self)
+
+    def action_test_connection(self):
+        """Comprueba la conectividad con la fuente de datos seleccionada.
+
+        Permite verificar (antes de minar) que el servicio responde y que las
+        credenciales están configuradas, reduciendo los fallos por conexión.
+        """
+        self.ensure_one()
+        source = self.env['lead.source.registry'].get_source(self.source_key)
+        success, message = source.test_connection()
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': _('Conexión exitosa') if success else _('Fallo de conexión'),
+                'message': message,
+                'type': 'success' if success else 'danger',
+                'sticky': not success,
+            },
+        }
 
     def _build_source_filters(self):
         """Construye los filtros delegando al objeto de la fuente seleccionada."""
@@ -348,35 +307,81 @@ class CrmLeadRequest(models.Model):
             ('external_id', 'in', list(candidate_map.keys()))
         ]).mapped('external_id'))
 
-        registry = self.env['lead.source.registry']
-        Lead = self.env['crm.lead']
-        fingerprint_seen = set()
+        # 1. Pre-creación y resolución en lote de etiquetas automáticas
+        all_auto_tag_names = set()
+        for ext_id, record in candidate_map.items():
+            if ext_id not in existing:
+                all_auto_tag_names.update(source.get_automatic_tag_names(record))
 
-        lead_vals_list = []
+        tag_map = {}
+        if all_auto_tag_names:
+            Tag = self.env['crm.tag'].sudo()
+            existing_tags = Tag.search([('name', 'in', list(all_auto_tag_names))])
+            tag_map = {t.name: t.id for t in existing_tags}
+            missing_names = all_auto_tag_names - set(tag_map.keys())
+            if missing_names:
+                new_tags = Tag.create([{'name': name} for name in missing_names])
+                for t in new_tags:
+                    tag_map[t.name] = t.id
+
+        # 2. Generación inicial de vals
+        unfiltered_candidates = []
         for ext_id, record in candidate_map.items():
             if ext_id in existing:
                 continue
-            existing.add(ext_id)
-
-            auto_tag_ids = source.get_automatic_tag_ids(record)
+            auto_names = source.get_automatic_tag_names(record)
+            auto_tag_ids = [tag_map[name] for name in auto_names if name in tag_map]
             all_tag_ids = list(set(manual_tag_ids + auto_tag_ids))
 
             vals = source.record_to_lead_vals(
                 record, self.lead_type, self.team_id.id,
                 self.user_id.id, all_tag_ids, self.id)
             vals['external_id'] = ext_id
+            unfiltered_candidates.append(vals)
 
-            # Deduplicación entre fuentes por huella (nombre+ciudad o teléfono)
+        if not unfiltered_candidates:
+            return 0
+
+        # 3. Consulta en lote de duplicados existentes por teléfono y nombre
+        candidate_phones = {
+            v.get('phone').strip()
+            for v in unfiltered_candidates
+            if (v.get('phone') or '').strip()
+        }
+        candidate_names = {
+            (v.get('name') or v.get('partner_name') or '').strip().lower()
+            for v in unfiltered_candidates
+            if (v.get('name') or v.get('partner_name') or '').strip()
+        }
+
+        existing_phones = set()
+        if candidate_phones:
+            phone_domain = ['|', ('phone', 'in', list(candidate_phones)), ('mobile', 'in', list(candidate_phones))]
+            existing_phones = set(self.env['crm.lead'].search(phone_domain).mapped(lambda l: l.phone or l.mobile))
+
+        existing_names = set()
+        if candidate_names:
+            name_leads = self.env['crm.lead'].search([('name', 'in', [v.get('name') for v in unfiltered_candidates if v.get('name')])])
+            existing_names = {l.name.lower() for l in name_leads if l.name}
+
+        registry = self.env['lead.source.registry']
+        Lead = self.env['crm.lead']
+        fingerprint_seen = set()
+        lead_vals_list = []
+
+        for vals in unfiltered_candidates:
             name = (vals.get('name') or vals.get('partner_name') or '').strip()
             phone = (vals.get('phone') or '').strip()
             city = (vals.get('city') or '').strip()
+
+            if phone and phone in existing_phones:
+                continue
+            if name and name.lower() in existing_names:
+                continue
+
             if name:
                 fp = registry._normalize_dedup_key(name=name, city=city, phone=phone)
                 if fp in fingerprint_seen:
-                    continue
-                duplicate = registry.find_existing_by_fingerprint(vals)
-                if duplicate:
-                    fingerprint_seen.add(fp)
                     continue
                 fingerprint_seen.add(fp)
 

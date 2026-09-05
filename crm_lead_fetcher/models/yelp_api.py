@@ -1,7 +1,12 @@
 import time
 
 from odoo import _, api, models
-from odoo.exceptions import UserError
+from ..exceptions import (
+    LeadSourceConnectionError,
+    LeadSourceAuthError,
+    LeadSourceQuotaError,
+    LeadSourceDataError,
+)
 
 
 class YelpAPI(models.AbstractModel):
@@ -35,28 +40,37 @@ class YelpAPI(models.AbstractModel):
 
     @api.model
     def _get(self, url, params=None):
-        """GET con reintentos ante fallas de red."""
+        """GET con reintentos ante fallas de red y errores mapeados a excepciones tipadas."""
         import requests
         api_key = self._api_key()
         if not api_key:
-            raise UserError(_('Configure la API Key de Yelp en Ajustes > CRM > Minado de Leads.'))
+            raise LeadSourceAuthError(_('Configure la API Key de Yelp en Ajustes > CRM > Minado de Leads.'))
         headers = {'Authorization': f'Bearer {api_key}'}
         last_error = None
         for attempt in range(self.MAX_RETRIES):
             try:
-                resp = requests.get(url, headers=headers, params=params, timeout=30)
+                resp = requests.get(url, headers=headers, params=params, timeout=25)
+                if resp.status_code in (401, 403):
+                    raise LeadSourceAuthError(_('API Key de Yelp rechazada o inválida (HTTP %s).', resp.status_code))
                 if resp.status_code == 429:
-                    retry_after = int(resp.headers.get('Retry-After', 60))
-                    time.sleep(retry_after)
-                    continue
+                    if attempt < self.MAX_RETRIES - 1:
+                        retry_after = int(resp.headers.get('Retry-After', 5))
+                        time.sleep(min(retry_after, 10))
+                        continue
+                    raise LeadSourceQuotaError(_('Límite de peticiones de Yelp excedido (Rate Limit 429).'))
                 resp.raise_for_status()
                 return resp.json()
-            except requests.exceptions.RequestException as err:
+            except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as err:
                 last_error = err
                 if attempt < self.MAX_RETRIES - 1:
                     time.sleep(self.RETRY_BACKOFF * (attempt + 1))
                 continue
-        raise UserError(_('Yelp API error: %s', last_error))
+            except ValueError as err:
+                raise LeadSourceDataError(_('Respuesta inválida recibida de Yelp.')) from err
+            except requests.exceptions.RequestException as err:
+                last_error = err
+                break
+        raise LeadSourceConnectionError(_('Error al conectar con Yelp Fusion API: %s', last_error))
 
     def search(self, term=None, location=None, categories=None,
                radius=None, price=None, sort_by='best_match',

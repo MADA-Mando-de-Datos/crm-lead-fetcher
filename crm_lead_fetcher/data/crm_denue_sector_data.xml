@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
-    <data noupdate="1">
+    <data noupdate="0">
 
         <!-- ═══════════════════════════════════════════════════════════════════ -->
         <!-- SECTOR 11: AGRICULTURA, CRÍA Y EXPLOTACIÓN DE ANIMALES,          -->
@@ -428,7 +428,7 @@
             <field name="sector_code">46</field>
             <field name="sector_name">Comercio al por menor</field>
             <field name="description">Supermercados, tiendas departamentales, minisupers, Walmart, Soriana</field>
-            <field name="keywords">supermercado,tienda,abarrotes,no especializado,departamental,walmart,soriana,chedraui</field>
+            <field name="keywords">supermercado,supermercados,tienda,tiendas,abarrotes,minisuper,departamental,walmart,soriana,chedraui,comercial mexicana,oxxo,tienda de conveniencia</field>
         </record>
         <record id="denue_sector_462" model="crm.denue.sector">
             <field name="code">462</field>
@@ -436,7 +436,7 @@
             <field name="sector_code">46</field>
             <field name="sector_name">Comercio al por menor</field>
             <field name="description">Vinaterías, licorerías, abarrotes especializados, tiendas de tabaco</field>
-            <field name="keywords">vinateria,licoreria,abarrotes,tabaco,cigarro,vino,cerveza</field>
+            <field name="keywords">vinateria,licoreria,abarrotes,tabaco,cigarro,vino,cerveza,licores,tienda de abarrotes</field>
         </record>
         <record id="denue_sector_463" model="crm.denue.sector">
             <field name="code">463</field>
@@ -444,7 +444,7 @@
             <field name="sector_code">46</field>
             <field name="sector_name">Comercio al por menor</field>
             <field name="description">Tiendas de ropa, calzado, accesorios y boutiques</field>
-            <field name="keywords">ropa,vestir,calzado,texto,moda,boutique,zapateria,tienda ropa</field>
+            <field name="keywords">ropa,vestir,calzado,textil,moda,boutique,boutiques,zapateria,zapaterias,tienda ropa,tiendas de ropa,accesorios,ropa de vestir,lenceria,deportes</field>
         </record>
         <record id="denue_sector_464" model="crm.denue.sector">
             <field name="code">464</field>
@@ -452,7 +452,7 @@
             <field name="sector_code">46</field>
             <field name="sector_name">Comercio al por menor</field>
             <field name="description">Tiendas de muebles, electrodomésticos, ferretería y decoración</field>
-            <field name="keywords">hogar,mueble,electrodomestico,ferreteria,decoracion,tienda muebles</field>
+            <field name="keywords">hogar,mueble,muebles,electrodomestico,electrodomesticos,ferreteria,ferreterias,decoracion,tienda muebles,casa,blancos,alfombras,iluminacion,linea blanca,regalos</field>
         </record>
         <record id="denue_sector_465" model="crm.denue.sector">
             <field name="code">465</field>
@@ -460,7 +460,7 @@
             <field name="sector_code">46</field>
             <field name="sector_name">Comercio al por menor</field>
             <field name="description">Joyas, relojes, ópticas, farmacias, artículos religiosos</field>
-            <field name="keywords">joyeria,reloj,optica,farmacia,personal,religious,farmacia,drogueria</field>
+            <field name="keywords">joyeria,joyerias,reloj,relojeria,optica,opticias,farmacia,farmacias,personal,mascotas,articulos religiosos,drogueria,perfumeria,belleza</field>
         </record>
         <record id="denue_sector_466" model="crm.denue.sector">
             <field name="code">466</field>
@@ -659,7 +659,7 @@
             <field name="sector_code">52</field>
             <field name="sector_name">Servicios financieros y de seguros</field>
             <field name="description">Aseguradoras, planes de pensiones, fondos de retiro</field>
-            <field name="keywords">seguros,fianza,aseguradora,broker,riesgo,pension,retiro,vida,auto</field>
+            <field name="keywords">seguros,fianza,aseguradora,broker,riesgo,pension,retiro,vida,auto,agente de seguros,aseguradoras,seguro de gastos medicos</field>
         </record>
         <record id="denue_sector_524" model="crm.denue.sector">
             <field name="code">524</field>
@@ -688,7 +688,7 @@
             <field name="sector_code">53</field>
             <field name="sector_name">Servicios inmobiliarios y de alquiler</field>
             <field name="description">Agencias inmobiliarias, compra-venta de terrenos, administración de propiedades</field>
-            <field name="keywords">inmobiliaria,bienes raices,renta,venta,terreno,propiedad,agencia,construccion</field>
+            <field name="keywords">inmobiliaria,inmobiliarias,bienes raices,renta,venta,terreno,terrenos,propiedad,propiedades,agencia,agencia inmobiliaria,construccion,departamentos,condominios,casas,oficinas,avaluos,avalúo</field>
         </record>
         <record id="denue_sector_532" model="crm.denue.sector">
             <field name="code">532</field>
@@ -709,7 +709,7 @@
             <field name="sector_code">54</field>
             <field name="sector_name">Servicios profesionales, científicos y técnicos</field>
             <field name="description">Consultoría, ingeniería, legal, contable, diseño, arquitectura, software, publicidad</field>
-            <field name="keywords">profesional,cientifico,tecnico,consultoria,ingenieria,legal,contable,diseño,tecnologia,software,arquitecto,publicidad</field>
+            <field name="keywords">profesional,cientifico,tecnico,consultoria,consultor,ingenieria,ingeniero,legal,contable,contador,contadores,contabilidad,diseño,diseñador,tecnologia,software,arquitecto,arquitectura,publicidad,abogado,abogados,abogacia,despacho,despachos,bufete,bufete juridico,juridico,juridicos,notaria,notarial,asesor,asesoria,auditor,auditoria,reclutamiento,traductor,topografo</field>
         </record>
         <record id="denue_sector_542" model="crm.denue.sector">
             <field name="code">542</field>
@@ -751,7 +751,7 @@
             <field name="sector_code">56</field>
             <field name="sector_name">Servicios educativos</field>
             <field name="description">Escuelas, universidades, academias, capacitación, entrenamiento, kinder</field>
-            <field name="keywords">educacion,escuela,colegio,universidad,capacitacion,curso,formacion,kinder,academia,training</field>
+            <field name="keywords">educacion,escuela,escuelas,colegio,colegios,universidad,universidades,capacitacion,curso,cursos,formacion,kinder,preescolar,academia,training,preparatoria,secundaria,primaria,idiomas,maestros,escuela de idiomas</field>
         </record>
 
         <!-- ═══════════════════════════════════════════════════════════════════ -->
@@ -764,7 +764,7 @@
             <field name="sector_code">61</field>
             <field name="sector_name">Servicios de salud y asistencia social</field>
             <field name="description">Hospitales, clínicas, consultorios, laboratorios, farmacias, terapias</field>
-            <field name="keywords">salud,hospital,clinica,medico,doctor,consulta,labatorio,rayos,urgencias,dental,farmacia</field>
+            <field name="keywords">salud,hospital,clinica,medico,medicos,doctor,consulta,consultorio,consultorios,labatorio,laboratorio,rayos,urgencias,dental,dentista,dentistas,odontologo,farmacia,farmacias,terapia,terapeuta,psicologo,psicologia,fisioterapia,pediatra,ginecologo,medicina,enfermeria,optometria</field>
         </record>
         <record id="denue_sector_612" model="crm.denue.sector">
             <field name="code">612</field>
@@ -806,7 +806,7 @@
             <field name="sector_code">71</field>
             <field name="sector_name">Servicios de alojamiento temporal y de preparación de alimentos y bebidas</field>
             <field name="description">Restaurantes, cafeterías, bares, taquerías, pizzerías, cocinas económicas</field>
-            <field name="keywords">restaurante,comida,bebidas,cafeteria,taqueria,bar,catering,banquete,comida rapida,pizza,tacos,cocteleria</field>
+            <field name="keywords">restaurante,restaurantes,comida,bebidas,cafeteria,cafe,taqueria,tacos,bar,bares,catering,banquete,comida rapida,pizza,pizzerias,cocteleria,loncheria,fondas,marliscos,marisco,heladeria,jugos,buffet</field>
         </record>
 
         <!-- ═══════════════════════════════════════════════════════════════════ -->
@@ -819,7 +819,7 @@
             <field name="sector_code">72</field>
             <field name="sector_name">Otros servicios</field>
             <field name="description">Talleres mecánicos, electricistas, plomeros,lavado de autos</field>
-            <field name="keywords">reparacion,mantenimiento,mecanico,electrico,plomeria,tecnico,servicio tecnico,lavado auto,taller</field>
+            <field name="keywords">reparacion,mantenimiento,mecanico,mecanicos,taller,talleres,electrico,electricista,plomeria,plomero,tecnico,servicio tecnico,lavado auto,lavado de autos,aire acondicionado,cerrajeria,cerrajero,hielo,refrigeracion</field>
         </record>
         <record id="denue_sector_722" model="crm.denue.sector">
             <field name="code">722</field>
@@ -827,7 +827,7 @@
             <field name="sector_code">72</field>
             <field name="sector_name">Otros servicios</field>
             <field name="description">Lavanderías, tintorerías, peluquerías, estéticas, spas, barberías</field>
-            <field name="keywords">personal,lavanderia,tintoreria,belleza,estetica,spa,peluqueria,barberia,cortes uñas</field>
+            <field name="keywords">personal,lavanderia,tintoreria,belleza,estetica,spa,peluqueria,peluqueria,barberia,barbero,cortes uñas,manicura,pedicura,gimnasio,masajes,uber mascotas,sastreria,zapateria reparacion</field>
         </record>
         <record id="denue_sector_723" model="crm.denue.sector">
             <field name="code">723</field>

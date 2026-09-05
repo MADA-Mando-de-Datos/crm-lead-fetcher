@@ -6,11 +6,10 @@
         <field name="arch" type="xml">
             <form string="Generar Leads">
                     <header>
-                        <button name="action_submit" type="object" string="Generar Leads" class="btn-primary" icon="fa-magic"/>
-                        <button name="action_draft" type="object" string="Nueva búsqueda" class="btn-secondary" invisible="state == 'draft'"/>
-                        <button name="action_delete_with_leads" type="object" string="Eliminar solicitud y leads" class="btn-danger" icon="fa-trash"
-                            confirm="¿Eliminar esta solicitud y todos los leads asociados de CRM? Esta acción no se puede deshacer."
-                            invisible="state != 'done' or lead_count == 0"/>
+                        <button name="action_submit" type="object" string="Generar Leads" class="btn-primary" icon="fa-magic" invisible="state == 'done'"/>
+                        <button name="action_test_connection" type="object" string="Comprobar conexión" class="btn-secondary" icon="fa-plug" invisible="state != 'draft'"
+                            help="Verifica que el servicio de la fuente seleccionada esté disponible antes de minar."/>
+                        <button name="action_duplicate_request" type="object" string="Nueva búsqueda con estos filtros" class="btn-secondary" icon="fa-copy" invisible="state != 'done'"/>
                     </header>
                 <sheet>
                     <div class="alert alert-info" role="status" invisible="state != 'draft'">
@@ -28,7 +27,7 @@
                             <button name="crm_lead_fetcher.action_view_lead_leads" type="action" class="btn btn-sm btn-outline-primary" invisible="lead_type != 'lead'">Ver Leads</button>
                             <button name="crm_lead_fetcher.action_view_lead_opportunities" type="action" class="btn btn-sm btn-outline-primary" invisible="lead_type != 'opportunity'">Ver Oportunidades</button>
                             <button name="action_export_csv" type="object" class="btn btn-sm btn-outline-success" icon="fa-download">Exportar CSV</button>
-                            <button name="action_draft" type="object" class="btn btn-sm btn-secondary" confirm="Se eliminarán los leads generados de esta solicitud para comenzar de cero. ¿Continuar?">Nueva búsqueda</button>
+                            <button name="action_duplicate_request" type="object" class="btn btn-sm btn-secondary" icon="fa-copy">Duplicar búsqueda</button>
                         </div>
                     </div>
 
@@ -58,7 +57,6 @@
                                         required="source_key == 'denue' and search_type == 'by_state'"
                                         invisible="source_key != 'denue' or search_type != 'by_state'"
                                         help="Sectores SCIAN (obligatorio cuando el tipo es 'Todo el estado')"/>
-                                    <field name="municipio" placeholder="Ej: San Luis Potosí, Soledad..."/>
                                 </group>
                                 <group string="Parámetros de búsqueda">
                                     <field name="actividad"
@@ -69,10 +67,10 @@
                                         placeholder="Nombre comercial o razón social"/>
                                 </group>
                             </group>
-                            <group string="Filtros de tamaño (estrato)">
+                            <group string="Tamaño de empresa (Estrato)">
                                 <group>
-                                    <field name="estrato_min" string="Estrato mínimo (1–7)"/>
-                                    <field name="estrato_max" string="Estrato máximo (1–7)"/>
+                                    <field name="estrato_min" string="Mínimo"/>
+                                    <field name="estrato_max" string="Máximo"/>
                                 </group>
                                 <div class="text-muted" style="font-size:0.85em; padding: 4px 0;">
                                     1 = 0‑5 personas &#160;&#183;&#160; 2 = 6‑10 &#160;&#183;&#160; 3 = 11‑30 &#160;&#183;&#160;
@@ -82,52 +80,29 @@
                         </page>
                     </notebook>
 
-
                     <!-- ===================== SECCIÓN YELP ===================== -->
                     <notebook invisible="source_key != 'yelp'">
                         <page string="Filtros Yelp" name="yelp_filters">
                             <group>
-                                <group string="Búsqueda">
-                                    <field name="yelp_term" placeholder="Ej: restaurante italiano, plomería"/>
+                                <group string="Parámetros de Búsqueda">
+                                    <field name="yelp_term" placeholder="Ej: restaurante italiano, plomería, clínica"/>
                                     <field name="yelp_location" required="source_key == 'yelp'"
-                                        placeholder="Ej: CDMX, Monterrey, SLP"/>
+                                        placeholder="Ej: San Luis Potosí, Querétaro, CDMX"/>
                                     <field name="yelp_categories" widget="many2many_tags" options="{'no_create': True, 'no_open': True}"/>
-                                </group>
-                                <group string="Filtros avanzados">
-                                    <field name="yelp_radius" placeholder="Máximo 40,000 metros"/>
-                                    <field name="yelp_price"/>
-                                    <field name="yelp_sort_by"/>
-                                    <field name="yelp_open_now"/>
-                                    <field name="yelp_transactions"/>
-                                    <field name="yelp_attributes"/>
-                                    <field name="yelp_min_rating" placeholder="0 = sin filtro"/>
-                                    <field name="yelp_min_reviews" placeholder="0 = sin filtro"/>
-                                    <div invisible="yelp_sort_by != 'distance'" class="o_row">
-                                        <label for="yelp_latitude" string="Coordenadas (distancia)"/>
-                                        <field name="yelp_latitude" nolabel="1" placeholder="lat"/>
-                                        <field name="yelp_longitude" nolabel="1" placeholder="lon"/>
-                                    </div>
                                 </group>
                             </group>
                         </page>
                     </notebook>
+
                     <!-- ===================== SECCIÓN GOOGLE PLACES ===================== -->
                     <notebook invisible="source_key != 'google'">
                         <page string="Filtros Google Places" name="google_filters">
                             <group>
-                                <group string="Búsqueda y Ubicación">
+                                <group string="Parámetros de Búsqueda">
                                     <field name="google_query" placeholder="Ej: despacho contable, restaurante, dentista"/>
                                     <field name="google_location" required="source_key == 'google'"
                                         placeholder="Ej: San Luis Potosí, SLP, Querétaro"/>
                                     <field name="google_place_type_ids" widget="many2many_tags" options="{'no_create': True, 'no_open': True}"/>
-                                </group>
-                                <group string="Filtros avanzados">
-                                    <field name="google_radius" placeholder="Máximo 50,000 metros (default 5,000)"/>
-                                    <field name="google_min_price"/>
-                                    <field name="google_max_price"/>
-                                    <field name="google_open_now"/>
-                                    <field name="google_min_rating" placeholder="0 = sin filtro (1 a 5)"/>
-                                    <field name="google_min_reviews" placeholder="0 = sin filtro"/>
                                 </group>
                             </group>
                         </page>
@@ -158,13 +133,6 @@
         <field name="name">Minado de Leads</field>
         <field name="res_model">crm.lead.request</field>
         <field name="view_mode">list,form</field>
-    </record>
-
-    <record id="action_delete_with_leads_server" model="ir.actions.server">
-        <field name="name">Eliminar solicitud y leads asociados</field>
-        <field name="model_id" ref="model_crm_lead_request"/>
-        <field name="state">code</field>
-        <field name="code">for record in records: record.action_delete_with_leads()</field>
     </record>
 
     <menuitem
