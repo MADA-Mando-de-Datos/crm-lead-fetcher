@@ -12,3 +12,6 @@ __pycache__/
 # Backups / temp
 *.bak
 *.tmp
+.cache/
+.ruff_cache/
+.pytest_cache/
