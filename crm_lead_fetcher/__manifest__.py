@@ -28,6 +28,9 @@ Features:
     'website': 'https://madamexico.me',
     'support': 'hola@madamexico.me',
     'depends': ['base', 'crm'],
+    'external_dependencies': {
+        'python': ['beautifulsoup4'],
+    },
     'data': [
         'security/ir.model.access.csv',
         'data/ir_sequence_data.xml',

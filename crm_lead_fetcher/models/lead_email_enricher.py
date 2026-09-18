@@ -5,7 +5,11 @@ import socket
 import urllib.parse
 from urllib.parse import urljoin, urlparse
 
-from bs4 import BeautifulSoup
+try:
+    from bs4 import BeautifulSoup
+except ImportError:
+    BeautifulSoup = None
+
 from odoo import _, api, models
 from odoo.exceptions import UserError
 
