@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <data noupdate="1">
+<odoo noupdate="1">
         <record id="google_type_accounting" model="crm.google.place.type">
             <field name="code">accounting</field>
             <field name="name">Contabilidad / Despachos contables</field>
@@ -171,5 +170,4 @@
             <field name="name">Impermeabilización y Techados</field>
             <field name="keywords">impermeabilizacion,techos,laminas,estructuras metalicas</field>
         </record>
-    </data>
 </odoo>

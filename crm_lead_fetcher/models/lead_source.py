@@ -2,13 +2,13 @@ from odoo import _, api, fields, models
 
 # Labels estáticos para estratos DENUE (evitan import circular/frágil)
 ESTRATO_LABELS = {
-    1: '0 a 5 personas',
-    2: '6 a 10 personas',
-    3: '11 a 30 personas',
-    4: '31 a 50 personas',
-    5: '51 a 100 personas',
-    6: '101 a 250 personas',
-    7: '251 y más personas',
+    1: "0 a 5 personas",
+    2: "6 a 10 personas",
+    3: "11 a 30 personas",
+    4: "31 a 50 personas",
+    5: "51 a 100 personas",
+    6: "101 a 250 personas",
+    7: "251 y más personas",
 }
 
 
@@ -21,12 +21,12 @@ class LeadSource(models.AbstractModel):
     3. Registrar en _get_sources()
     """
 
-    _name = 'lead.source'
-    _description = 'Fuente de datos de leads (abstracta)'
+    _name = "lead.source"
+    _description = "Fuente de datos de leads (abstracta)"
 
-    source_key = fields.Char(string='Clave técnica', required=True)
-    name = fields.Char(string='Nombre', required=True)
-    description = fields.Text(string='Descripción')
+    source_key = fields.Char(string="Clave técnica", required=True)
+    name = fields.Char(string="Nombre", required=True)
+    description = fields.Text(string="Descripción")
     active = fields.Boolean(default=True)
     sequence = fields.Integer(default=10)
 
@@ -44,7 +44,6 @@ class LeadSource(models.AbstractModel):
 
     def validate_filters(self, wizard):
         """Valida que los campos requeridos para esta fuente estén completos en el wizard."""
-        pass
 
     def build_filters(self, wizard):
         """Construye y retorna el diccionario de filtros para el cliente API."""
@@ -52,7 +51,9 @@ class LeadSource(models.AbstractModel):
 
     def get_external_id(self, record):
         """Extrae el identificador único del registro para deduplicación."""
-        return str(record.get('external_id') or record.get('place_id') or record.get('id') or record.get('Id') or '').strip()
+        return str(
+            record.get("external_id") or record.get("place_id") or record.get("id") or record.get("Id") or ""
+        ).strip()
 
     def get_automatic_tag_names(self, record):
         """Retorna lista de strings con nombres de etiquetas a asignar automáticamente."""
@@ -68,8 +69,8 @@ class LeadSource(models.AbstractModel):
 
 
 class LeadSourceRegistry(models.AbstractModel):
-    _name = 'lead.source.registry'
-    _description = 'Registro de fuentes de leads'
+    _name = "lead.source.registry"
+    _description = "Registro de fuentes de leads"
 
     @api.model
     def get_source(self, source_key):
@@ -77,16 +78,16 @@ class LeadSourceRegistry(models.AbstractModel):
         sources = self._get_sources()
         model_name = sources.get(source_key)
         if not model_name:
-            raise ValueError(_('Fuente de datos desconocida: %s', source_key))
+            raise ValueError(_("Fuente de datos desconocida: %s", source_key))
         return self.env[model_name]
 
     @api.model
     def _get_sources(self):
         """Una sola fuente de verdad para el registro de fuentes."""
         return {
-            'denue': 'lead.source.denue',
-            'yelp': 'lead.source.yelp',
-            'google': 'lead.source.google',
+            "denue": "lead.source.denue",
+            "yelp": "lead.source.yelp",
+            "google": "lead.source.google",
         }
 
     @api.model
@@ -95,9 +96,9 @@ class LeadSourceRegistry(models.AbstractModel):
         Single source of truth del texto visible; evita el desborde en vistas
         compactas (kanban) sin hardcodear el nombre en la plantilla."""
         return {
-            'denue': 'DENUE (INEGI)',
-            'yelp': 'Yelp',
-            'google': 'Google Places',
+            "denue": "DENUE (INEGI)",
+            "yelp": "Yelp",
+            "google": "Google Places",
         }
 
     @api.model
@@ -114,9 +115,10 @@ class LeadSourceRegistry(models.AbstractModel):
         return result
 
     @api.model
-    def _normalize_dedup_key(self, name='', city='', phone=''):
+    def _normalize_dedup_key(self, name="", city="", phone=""):
         """Normaliza nombre + ciudad + teléfono para reconciliar negocios entre fuentes."""
-        def norm(s):
-            return ' '.join((s or '').lower().split())
-        return '|'.join([norm(name), norm(city), norm(phone)])
 
+        def norm(s):
+            return " ".join((s or "").lower().split())
+
+        return "|".join([norm(name), norm(city), norm(phone)])

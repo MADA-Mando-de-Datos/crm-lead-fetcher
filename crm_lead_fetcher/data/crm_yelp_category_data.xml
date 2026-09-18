@@ -1,6 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<odoo>
-    <data noupdate="1">
+<odoo noupdate="1">
 
         <record id="yelp_cat_restaurants" model="crm.yelp.category">
             <field name="alias">restaurants</field>
@@ -143,5 +142,4 @@
             <field name="keywords">gimnasio,fitness,ejercicio,entrenamiento,yoga</field>
         </record>
 
-    </data>
 </odoo>

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <data noupdate="1">
-        <record id="seq_crm_lead_request" model="ir.sequence">
-            <field name="name">Solicitud de Minado de Leads</field>
-            <field name="code">crm.lead.request</field>
-            <field name="prefix">LR/%(year)s/</field>
-            <field name="padding">4</field>
-        </record>
-    </data>
+<odoo noupdate="1">
+    <record id="seq_crm_lead_request" model="ir.sequence">
+        <field name="name">Solicitud de Minado de Leads</field>
+        <field name="code">crm.lead.request</field>
+        <field name="prefix">LR/%(year)s/</field>
+        <field name="padding">4</field>
+    </record>
 </odoo>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <data noupdate="1">
+<odoo noupdate="1">
         <!-- 32 Entidades Federativas de México (códigos INEGI) -->
         <record id="entidad_01" model="crm.denue.entidad">
             <field name="code">01</field>
@@ -130,5 +129,4 @@
             <field name="code">32</field>
             <field name="name">Zacatecas</field>
         </record>
-    </data>
 </odoo>
