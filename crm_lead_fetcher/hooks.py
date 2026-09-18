@@ -25,15 +25,6 @@ def uninstall_hook(env):
     ]
     env['ir.config_parameter'].sudo().search([('key', 'in', params)]).unlink()
 
-    config_fields = env['ir.model.fields'].sudo().search([
-        ('model', '=', 'res.config.settings'),
-        ('name', 'in', [
-            'denue_token', 'denue_entidad', 'denue_max_records', 'denue_sleep_seconds',
-            'yelp_api_key', 'yelp_location', 'yelp_max_results',
-            'google_places_api_key', 'google_location', 'google_max_results',
-        ])
-    ])
-    if config_fields:
-        config_fields.unlink()
+
 
     _logger.info("uninstall_hook de crm_lead_fetcher completado exitosamente.")
